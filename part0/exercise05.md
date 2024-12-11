@@ -1,4 +1,5 @@
-# Sequence diagram for New note (AJAX)
+# Sequence diagram for single page app
+
 
 ```mermaid
 
@@ -7,15 +8,7 @@ sequenceDiagram
     participant server 
 
 
-    Note right of browser: The text entered in the form is sent with POST request.
-
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
-    activate server
-    server->>browser: Status: 302 ; Redirect location: /exampleapp/notes
-    deactivate server
-
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/new_note_spa
     activate server
     server-->>browser: Status:200 ; Response: HTML document
     deactivate server
@@ -25,7 +18,7 @@ sequenceDiagram
     server-->>browser: Status:200 ; Response: the css file
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
     server-->>browser: Status:200 ; Response:  the JavaScript file
     deactivate server
@@ -37,5 +30,5 @@ sequenceDiagram
     server-->>browser: Status:200 ; Response: [{ "content": ... }, ... ]
     deactivate server
 
-    Note right of browser: The browser executes the callback function that renders the notes
+    Note right of browser: The browser executes the callback function that parses the json and renders the notes. After the document is loaded in the browser, a callback function is registered for the submit action on the notes_form.
 ```
