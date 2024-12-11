@@ -1,7 +1,6 @@
-# Workflow 
+# Sequence diagram for New note (AJAX)
 
-```
-mermaid
+```mermaid
 
 sequenceDiagram
     participant browser
@@ -13,5 +12,29 @@ sequenceDiagram
    server->>browser: 302 REDIRECT https://studies.cs.helsinki.fi/exampleapp/notes
    deactivate server
 
-   Note right of browser: The note entered in the form is sent with POST request.
+   Note right of browser: The text entered in the form is sent with POST request.
+
+   browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+   activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": ... }, ... ]
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
 ```
