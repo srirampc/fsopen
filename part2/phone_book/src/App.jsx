@@ -1,15 +1,23 @@
-import { useState } from 'react'
-import Person from './components/Person'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import AddPerson from './components/AddPerson'
 import FilterPerson from './components/FilterPerson'
 import DisplayPhoneBook from './components/DisplayPhoneBook'
-//import './App.css'
 
 
-const App = (props) => {
-    const [persons, setPersons] = useState(props.persons)
+const App = () => {
+    const [persons, setPersons] = useState([])
     const [filterTxt, setFilterText] = useState('')
 
+    useEffect(() => {
+        console.log('persons')
+        axios
+            .get("http://localhost:3001/persons")
+            .then((response) => {
+                console.log('promise fullfilled')
+                setPersons(response.data)
+            })
+    }, [])
 
     return (
         <div>
