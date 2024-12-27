@@ -3,11 +3,13 @@ import Country from './components/Country.tsx'
 import FilterCountry from './components/FilterCountry.tsx'
 import countriesService from './services/countries'
 import { CountryInterface } from './services/DataInterfaces.tsx'
+import Weather from './components/Weather.tsx'
 
 const App = () => {
 
     const [countries, setCountries] = useState<Array<CountryInterface>>([])
     const [selectedCountries, setSelectedCountries] = useState<Array<CountryInterface>>([])
+    const [displayCountry, setDisplayCountry] = useState<CountryInterface>(null);
 
     useEffect(() => {
         countriesService
@@ -25,8 +27,10 @@ const App = () => {
 
     return (
         <>
-            <FilterCountry countries={countries} selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries} />
-            <Country selectedCountries={selectedCountries} />
+            <FilterCountry countries={countries} selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries}
+                            setDisplayCountry={setDisplayCountry}/>
+            <Country displayCountry={displayCountry} />
+            <Weather displayCountry={displayCountry} />
         </>
     )
 }

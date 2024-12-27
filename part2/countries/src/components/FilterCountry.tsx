@@ -15,6 +15,9 @@ const FilterCountry = (props: FilterPropsInterface) => {
             (cx: CountryInterface) => cx.name.common === showCx.name.common
         )
         props.setSelectedCountries(selecteds)
+        if (selecteds.length == 1) {
+            props.setDisplayCountry(selecteds[0])
+        }
     }
 
     useEffect(() => {
@@ -23,13 +26,15 @@ const FilterCountry = (props: FilterPropsInterface) => {
             const selecteds = props.countries.filter(
                 (cx: CountryInterface) => cx.name.common.toLowerCase().includes(filterTxt.toLowerCase())
             )
-            console.log(selecteds)
+            // console.log(selecteds)
             props.setSelectedCountries(selecteds)
+            if (selecteds.length == 1) {
+                props.setDisplayCountry(selecteds[0])
+            }
         } else {
             //setSelectedCountries([])
         }
     }, [filterTxt])
-
 
     return (
         <>
@@ -38,7 +43,7 @@ const FilterCountry = (props: FilterPropsInterface) => {
                 {
                     props.selectedCountries.map(
                         (cx: CountryInterface) =>
-                            <p>{cx.name.common} <button onClick={() => handleShowClick(cx)}> Show </button></p>
+                            <p key={cx.name.common}>{cx.name.common} <button onClick={() => handleShowClick(cx)}> Show </button></p>
                     )
                 }
             </div>

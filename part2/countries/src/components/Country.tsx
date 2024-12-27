@@ -1,27 +1,18 @@
 import { CountryPropsInterface } from "./CompInterfaces"
 
-
-
 const Country = (props: CountryPropsInterface) => {
-
-    if(props.selectedCountries.length == 0 ||
-       props.selectedCountries.length > 1){
+    if (props.displayCountry == null) {
         return (<></>)
     }
 
-    const country = props.selectedCountries[0]
-
-    console.log(Object.keys(country.languages))
-
-    // {props.country.languages.keys().map(lx => <li>props.country.languages[lx]</li>)}
     return (
         <div>
             <h1>
-                {country.name.common}
+                {props.displayCountry.name.common}
             </h1>
             <div>
-                <p>Capital : {country.capital[0]}</p>
-                <p>Area : {country.area.toString()} </p>
+                <p>Capital : {props.displayCountry.capital[0]}</p>
+                <p>Area : {props.displayCountry.area.toString()} </p>
             </div>
             <h2>
                 languages:
@@ -30,14 +21,14 @@ const Country = (props: CountryPropsInterface) => {
             <div>
                 <ul>
                     {
-                        Object.keys(country.languages).map(
-                            lx => <li key={lx}>{country.languages[lx]}</li>
+                        Object.keys(props.displayCountry.languages).map(
+                            lx => <li key={lx}>{props.displayCountry.languages[lx]}</li>
                         )
                     }
                 </ul>
             </div>
             <div>
-                <img src={country.flags.png} alt={country.flags.alt} style={{border:"1px solid black"}}/>
+                <img src={props.displayCountry.flags.png} alt={props.displayCountry.flags.alt} style={{ border: "1px solid black" }} />
             </div>
         </div>
     )
