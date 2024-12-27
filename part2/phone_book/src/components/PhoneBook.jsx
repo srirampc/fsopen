@@ -13,7 +13,25 @@ const PhoneBook = (props) => {
                 .then(removedPerson => {
                     const persons = props.persons.filter((p) => p.id != removedPerson.id)
                     props.setPersons(persons)
-                    // alert(`Sucessfully deleted ${deletedPerson.name}`)
+                    // alert(`Sucessfully deleted ${removedPerson.name}`)
+                    props.setNotifyMessage([
+                        ` ${removedPerson.name} was sucessfully removed`,
+                        "notify"
+                    ])
+                    setTimeout(() => {
+                        props.setNotifyMessage([null, ""])
+                    }, 5000)
+                }).catch(error => {
+                    // console.log(error)
+                    const persons = props.persons.filter((p) => p.id != person.id)
+                    props.setPersons(persons)
+                    props.setNotifyMessage([
+                        ` ${person.name} was already removed from the Phone book`,
+                        "error"
+                    ])
+                    setTimeout(() => {
+                        props.setNotifyMessage([null, ""])
+                    }, 5000)
                 })
         }
     }
