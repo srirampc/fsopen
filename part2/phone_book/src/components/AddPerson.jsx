@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import personsService from '../services/persons'
 
 const AddPerson = (props) => {
 
@@ -6,15 +7,37 @@ const AddPerson = (props) => {
     const addPerson = (event) => {
         event.preventDefault()
         console.log('button clicked', event.target)
-        if (props.persons.find((item) => item.name == newPerson.name) != undefined) {
-            alert(`${newPerson.name} is already added to the Phonebook`)
-        } else {
-            props.setPersons(props.persons.concat({
+        const foundPerson = props.persons.find((item) => item.name == newPerson.name)
+        if (foundPerson == undefined) {
+            const personObject = {
                 "name": newPerson.name,
                 "number": newPerson.number,
-                "id": props.persons.length + 1
-            }))
-            setNewPerson({ name: "", number: "" })
+                //"id": props.persons.length + 1
+            }
+            personsService
+                .create(personObject)
+                .then(returnedPerson => {
+                    props.setPersons(props.persons.concat(returnedPerson))
+                    setNewPerson({ name: "", number: "" })
+                })
+        } else {
+            if (foundPerson.number === newPerson.number) {
+                alert(`${newPerson.name} is already added to the Phonebook with the same number ${newPerson.number}. `)
+            } else {
+                if (window.confirm(`${newPerson.name} is already added to the Phonebook. Do you want to replace old number with new number?`)) {
+                    //TODO(update)
+                    const updatedPerson = {
+                        "name": foundPerson.name,
+                        "id": foundPerson.id,
+                        "number": newPerson.number
+                    }
+                    personsService.update(foundPerson.id, updatedPerson)
+                        .then(returnedPerson => {
+                            props.setPersons(props.persons.map(n => n.id == foundPerson.id ? returnedPerson : n))
+                        })
+                    setNewPerson({ name: "", number: "" })
+                }
+            }
         }
     }
     const handlePersonChange = (event) => {

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import AddPerson from './components/AddPerson'
 import FilterPerson from './components/FilterPerson'
-import DisplayPhoneBook from './components/DisplayPhoneBook'
-
+import PhoneBook from './components/PhoneBook'
+import personsService from './services/persons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -11,13 +11,14 @@ const App = () => {
 
     useEffect(() => {
         console.log('persons')
-        axios
-            .get("http://localhost:3001/persons")
-            .then((response) => {
+        personsService
+            .getAll()
+            .then((persons) => {
                 console.log('promise fullfilled')
-                setPersons(response.data)
+                setPersons(persons)
             })
     }, [])
+
 
     return (
         <div>
@@ -26,7 +27,7 @@ const App = () => {
             <h2>add a person</h2>
             <AddPerson persons={persons} setPersons={setPersons} />
             <h2>Numbers</h2>
-            <DisplayPhoneBook persons={persons} filterTxt={filterTxt} />
+            <PhoneBook persons={persons} filterTxt={filterTxt} setPersons={setPersons}/>
         </div>
     )
 }
