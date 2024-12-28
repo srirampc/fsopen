@@ -6,29 +6,27 @@ import { CountryInterface } from './services/DataInterfaces.tsx'
 import Weather from './components/Weather.tsx'
 
 const App = () => {
+    console.log("App render", import.meta.env.MODE)
 
     const [countries, setCountries] = useState<Array<CountryInterface>>([])
     const [selectedCountries, setSelectedCountries] = useState<Array<CountryInterface> | null >(null)
     const [displayCountry, setDisplayCountry] = useState<CountryInterface | null>(null);
 
     useEffect(() => {
+        console.log("useEffect run", countries)
         countriesService
             .getAll()
-            .then((countries) => {
-                setCountries(countries)
+            .then((ctdata) => {
+                setCountries(ctdata)
                 console.log('Loaded Countries')
                 // setSelectedCountries([countries[0]])
             })
     }, [])
 
-    if (countries.length == 0) {
-        return (<></>)
-    }
-
     return (
         <>
             <FilterCountry countries={countries} selectedCountries={selectedCountries} setSelectedCountries={setSelectedCountries}
-                setDisplayCountry={setDisplayCountry} />
+               setDisplayCountry={setDisplayCountry} />
             <Country displayCountry={displayCountry} />
             <Weather displayCountry={displayCountry} />
         </>

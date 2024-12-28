@@ -1,6 +1,7 @@
 import { CountryPropsInterface } from "./CompInterfaces"
 
 const Country = (props: CountryPropsInterface) => {
+    console.log('Country render')
     if (props.displayCountry == null) {
         return (<></>)
     }
@@ -19,20 +20,22 @@ const Country = (props: CountryPropsInterface) => {
 
             </h2>
             {props.displayCountry == null ? "" :
-                <div>
-                    <ul>
-                        {Object.keys(props.displayCountry.languages).map(
-                            lx => <li key={lx}>{
-                                props.displayCountry == null ? "" :
-                                    props.displayCountry.languages[lx]
-                            }</li>
-                        )}
-                    </ul>
-                </div>
+                <>
+                    <div>
+                        <ul>
+                            {Object.keys(props.displayCountry.languages).map(
+                                lx => <li key={lx}>{
+                                    props.displayCountry == null ? "" :
+                                        props.displayCountry.languages[lx]
+                                }</li>
+                            )}
+                        </ul>
+                    </div>
+                    <div>
+                        <img src={props.displayCountry.flags.png} alt={props.displayCountry.flags.alt} style={{ border: "1px solid black" }} />
+                    </div>
+                </>
             }
-            <div>
-                <img src={props.displayCountry.flags.png} alt={props.displayCountry.flags.alt} style={{ border: "1px solid black" }} />
-            </div>
         </div>
     )
 }

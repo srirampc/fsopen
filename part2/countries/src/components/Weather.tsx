@@ -16,6 +16,7 @@ interface WeatherLocation {
 }
 
 const Weather = (props: WeatherPropsInterface) => {
+    console.log("weather render")
     if (props.displayCountry === null) {
         return <></>
     }
