@@ -13,7 +13,6 @@ interface WeatherState {
 interface WeatherLocation {
     lat: number,
     lon: number,
-
 }
 
 const Weather = (props: WeatherPropsInterface) => {
@@ -25,35 +24,37 @@ const Weather = (props: WeatherPropsInterface) => {
         temp: 0, wind: 0, icon: '', desc: ''
     })
     const [weatherLoc, setWeatherLoc] = useState<WeatherLocation>({
-        lat:0, lon: 0
+        lat: 360, lon: 360 
     })
+    const lat = props.displayCountry.capitalInfo.latlng[0];
+    const lon = props.displayCountry.capitalInfo.latlng[1];
+    if (lat != weatherLoc.lat && lon != weatherLoc.lon) {
+        setWeatherLoc({
+            lat: lat,
+            lon: lon
+        })
+    }
+
     useEffect(() => {
-        const lat = props.displayCountry.capitalInfo.latlng[0];
-        const lon = props.displayCountry.capitalInfo.latlng[1];
         console.log("called for ", lat, lon, weatherLoc.lat, weatherLoc.lon)
-        if (lat != weatherLoc.lat && lon != weatherLoc.lon) {
-            console.log("in loop ", lat, lon, weatherLoc.lat, weatherLoc.lon)
-            setWeatherLoc({
-                lat: lat,
-                lon: lon
-            })
-            weatherService
-                .getWeather(lat, lon)
-                .then((weather: WeatherInterface) => {
-                    console.log(weather)
-                    setWeatherState({
-                        temp: weather.main.temp,
-                        wind: weather.wind.speed,
-                        icon: weather.weather[0].icon,
-                        desc: weather.weather[0].description
-                    })
-            
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+        if (weatherLoc.lat == 360 || weatherLoc.lon == 360) {
+            return
         }
-    }, [props.displayCountry])
+        weatherService
+            .getWeather(weatherLoc.lat, weatherLoc.lon)
+            .then((weather: WeatherInterface) => {
+                console.log(weather)
+                setWeatherState({
+                    temp: weather.main.temp,
+                    wind: weather.wind.speed,
+                    icon: weather.weather[0].icon,
+                    desc: weather.weather[0].description
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [weatherLoc])
 
     if (weatherState.temp == 0) {
         return <></>

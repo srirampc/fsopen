@@ -18,15 +18,18 @@ const Country = (props: CountryPropsInterface) => {
                 languages:
 
             </h2>
-            <div>
-                <ul>
-                    {
-                        Object.keys(props.displayCountry.languages).map(
-                            lx => <li key={lx}>{props.displayCountry.languages[lx]}</li>
-                        )
-                    }
-                </ul>
-            </div>
+            {props.displayCountry == null ? "" :
+                <div>
+                    <ul>
+                        {Object.keys(props.displayCountry.languages).map(
+                            lx => <li key={lx}>{
+                                props.displayCountry == null ? "" :
+                                    props.displayCountry.languages[lx]
+                            }</li>
+                        )}
+                    </ul>
+                </div>
+            }
             <div>
                 <img src={props.displayCountry.flags.png} alt={props.displayCountry.flags.alt} style={{ border: "1px solid black" }} />
             </div>
