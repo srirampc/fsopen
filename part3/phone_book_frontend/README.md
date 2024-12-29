@@ -5,8 +5,9 @@
 
 Modified for problems:
 - [3.9 -- 3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
-
 - [3.13 -- 3.14](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14)
+- [3.15 -- 3.18](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-15-3-18)
+
 Previously solved for the following problems:
 
 - [2.6 -- 2.10](https://fullstackopen.com/en/part2/forms#exercises-2-6-2-10)

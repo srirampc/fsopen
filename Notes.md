@@ -1,4 +1,19 @@
 # Notes
+## React Beginners Guide Course Notes 
+Notes from the egghead.io course [React Beginners Guide](https://egghead.io/courses/the-beginner-s-guide-to-react) with [source code](https://github.com/kentcdodds/beginners-guide-to-react).
+
+- Lazy initialization of state from useState with a function [Part 14 code](https://github.com/kentcdodds/beginners-guide-to-react)
+- Example of useRef to refer [Part 17 code](https://github.com/kentcdodds/beginners-guide-to-react)
+- Dynamic For example in [Part 20 code](https://github.com/kentcdodds/beginners-guide-to-react)
+- Controlled Form Fields to restrict values in input fields of a form: [documentation](https://reactjs.org/docs/forms.html#controlled-components) Example in [Part 21](https://github.com/kentcdodds/beginners-guide-to-react)
+- Error boundary in React [documentation](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary); [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) library
+- 
+
+## [Learn React](https://react.dev/learn) from React.dev
+
+- Updater function to queue a [series of state updates](https://react.dev/learn/queueing-a-series-of-state-updates)
+- Ways to [NOT mutate arrays in useState](https://react.dev/learn/updating-arrays-in-state)
+
 ##  Development -> Deployment
 
 1. Manage  CORS(Cross-Origin Resource Sharing). Install `cors`
