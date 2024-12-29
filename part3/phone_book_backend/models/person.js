@@ -12,16 +12,30 @@ mongoose.connect(url)
     })
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minLength: 3,
+        required: true,
+    },
+    number: {
+        type: String,
+        minLength: 8,
+        required: true,
+        validate: {
+            validator: function(v) {
+                return /^\d\d\d?-\d+$/.test(v);
+            },
+            message: props => `${props.value} is not a valid phone number! Phone number should be of the format 'prefix-suffix' where prefix is either 2 or 3 digit number and suffix is a number of minimum 5 digits`
+        },
+    },
 })
 
 personSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.__v
+    }
 })
 
 

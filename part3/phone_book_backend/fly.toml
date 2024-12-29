@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for phone-book-backend-fso-4377 on 2024-12-28T19:13:24-05:00
+# fly.toml app configuration file generated for phone-book-backend-fso-4377 on 2024-12-29T12:11:45-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -9,7 +9,7 @@ primary_region = 'atl'
 [build]
 
 [env]
-  PORT = 3000
+  PORT = '3000'
 
 [http_service]
   internal_port = 3000

@@ -22,6 +22,13 @@ const AddPerson = (props) => {
                     props.setNotifyMessage([null, ""])
                 }, 5000)
             })
+            .catch(error => {
+                const errMessage = error.response ? error.response.data.error : error.message
+                props.setNotifyMessage([errMessage, "error"])
+                setTimeout(() => {
+                    props.setNotifyMessage([null, ""])
+                }, 5000)
+            })
     }
 
     const updatePerson = (foundPerson) => {
@@ -40,8 +47,9 @@ const AddPerson = (props) => {
                     console.log(error)
                     const persons = props.persons.filter((p) => p.id != updatedPerson.id)
                     props.setPersons(persons)
+                    const errMessage = error.response ? error.response.data.error : error.message
                     props.setNotifyMessage([
-                        ` Error in updateing ${updatedPerson.name} in the Phone book`,
+                        ` Error in updating ${updatedPerson.name} : ${errMessage}`,
                         "error"
                     ])
                     setTimeout(() => {
@@ -58,31 +66,21 @@ const AddPerson = (props) => {
         const foundPerson = props.persons.find((item) => item.name == newPerson.name)
         if (foundPerson == undefined) {
             createPerson()
+        } else if (foundPerson.number === newPerson.number) {
+            props.setNotifyMessage([`${newPerson.name} is already added to the Phonebook with the same number ${newPerson.number}. `, "error"])
+            setTimeout(() => {
+                props.setNotifyMessage([null, ""])
+            }, 5000)
         } else {
-            // props.setNotifyMessage([`Update functionality is not implemented yet. `, "error"])
-            // setTimeout(() => {
-            //     props.setNotifyMessage([null, ""])
-            // }, 5000)
-
-            if (foundPerson.number === newPerson.number) {
-                props.setNotifyMessage([`${newPerson.name} is already added to the Phonebook with the same number ${newPerson.number}. `, "error"])
-                setTimeout(() => {
-                    props.setNotifyMessage([null, ""])
-                }, 5000)
-            } else {
-                updatePerson(foundPerson)
-            }
+            updatePerson(foundPerson)
         }
     }
     const handlePersonChange = (event) => {
         // console.log(event.target.id)
-        //console.log(event.target.value)
         if (event.target.id == "name") {
             setNewPerson({ name: event.target.value, number: newPerson.number })
-        } else {
-            if (event.target.id == "number") {
-                setNewPerson({ name: newPerson.name, number: event.target.value })
-            }
+        } else if (event.target.id == "number") {
+            setNewPerson({ name: newPerson.name, number: event.target.value })
         }
     }
 

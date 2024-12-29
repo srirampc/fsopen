@@ -15,14 +15,22 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('combined'))
 
-app.get('/', (request, response) => {
-    response.send('<h1>Hello, world!</h1>')
+app.get('/api', (request, response) => {
+    const mainPage = [
+        '<h1>Phone Book App</h1>', '<ul>',
+        '<li><a href="/api/persons">/api/persons</a> : GET/POST</li>',
+        '<li><a href="/api/persons/{id}">/api/persons/{id}</a> : GET/PUT/DELETE</li>',
+        '</ul>'
+    ]
+    response.send(mainPage.join(''))
 })
 
-app.get('/api/persons', (request, response) => {
-    Person.find({}).then(notes => {
-        response.json(notes)
-    })
+app.get('/api/persons', (request, response, next) => {
+    Person.find({})
+        .then(persons => {
+            response.json(persons)
+        })
+        .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -39,12 +47,12 @@ app.post('/api/persons', (request, response, next) => {
 
     if (!body.name) {
         return response.status(400).json({
-            error: 'name missing'
+            error: 'Name is missing'
         })
     }
     if (!body.number) {
         return response.status(400).json({
-            error: 'number missing'
+            error: 'Number is missing'
         })
     }
     Person
@@ -53,38 +61,38 @@ app.post('/api/persons', (request, response, next) => {
             console.log(foundPerson)
             if (foundPerson) {
                 return response.status(400).json({
-                    error: 'name must be unique'
-                })
-            } else {
-                const person = new Person({
-                    name: body.name,
-                    number: body.number,
-                })
-
-                person.save().then(savedPerson => {
-                    console.log(savedPerson)
-                    response.json(savedPerson)
+                    error:
+                    `Name must be unique : ${foundPerson.name} is already in the Phone Book.`
                 })
             }
+            const person = new Person({
+                name: body.name,
+                number: body.number,
+            })
+
+            person.save().then(savedPerson => {
+                console.log(savedPerson)
+                response.json(savedPerson)
+            })
+            .catch(error => next(error))
         })
         .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const body = request.body
-    const person = {
-        name: body.name,
-        number: body.number,
-    }
+    const { name, number } = request.body
 
     Person
-        .findByIdAndUpdate(request.params.id, person, {new: true})
+        .findByIdAndUpdate(
+            request.params.id,
+            { name, number },
+            { new: true, runValidators: true, context: 'query' }
+        )
         .then(updatedPerson => {
             response.json(updatedPerson)
         })
         .catch(error => next(error))
 })
-
 
 
 app.get('/info', (request, response, next) => {
@@ -121,10 +129,12 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
+    console.error("Error ", error.name)
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).send({ error: error.message })
     }
 
     next(error)
@@ -132,7 +142,6 @@ const errorHandler = (error, request, response, next) => {
 
 //  Last error to be handled
 app.use(errorHandler)
-
 
 
 const PORT = process.env.PORT || 3001

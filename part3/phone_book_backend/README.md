@@ -8,3 +8,4 @@ Problem Statements for exercises in part 3:
 - [3.12](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12)
 - [3.13 -- 3.14](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14)
 - [3.15 -- 3.18](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-15-3-18)
+- [3.19 -- 3.21](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21)
