@@ -31,6 +31,7 @@ morgan.token('pcontent', function (req, res) {
 
 const app = express()
 app.use(express.json())
+app.use(express.static('dist'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :pcontent'))
 app.use(cors())
 

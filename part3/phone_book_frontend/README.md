@@ -1,11 +1,11 @@
-# Solutions to Exercises 3.9 : Phone Book
+# Solutions to Exercises 3.9 -- 3.11 : Phone Book
 
 
 ## Problem Statements
 
-- Repurpose solution from part to for 3.9 [3.9](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
+- Repurpose solution from part 2 for 3.9 -- 3.11 [3.9 -- 3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
 
-Previously solved for the following problems
+Previously solved for the following problems:
 
 - [2.6 -- 2.10](https://fullstackopen.com/en/part2/forms#exercises-2-6-2-10)
 - [2.11](https://fullstackopen.com/en/part2/getting_data_from_server#exercise-2-11)
