@@ -14,6 +14,69 @@ Notes from the egghead.io course [React Beginners Guide](https://egghead.io/cour
 - Updater function to queue a [series of state updates](https://react.dev/learn/queueing-a-series-of-state-updates)
 - Ways to [NOT mutate arrays in useState](https://react.dev/learn/updating-arrays-in-state)
 
+## Linting 
+
+1. Install linter
+```sh
+npm install eslint @eslint/js --save-dev
+```
+2. Initialize lint settings
+```sh
+npx eslint --init
+```
+3. Code style lint plugin
+```sh
+npm install --save-dev @stylistic/eslint-plugin-js
+```
+5. Add to package.json
+```json
+{
+  // ...
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    // ...
+
+    "lint": "eslint ."
+  },
+  // ...
+}
+```
+3. Update eslint.config.mjs as required. 
+ - Ignore dist in eslint.config.mjs
+ - Equality checking only with ==== and other useful rules for eslint.config.js
+```javascript
+export default [
+  js.configs.recommended,
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        ...globals.node,
+      },
+      ecmaVersion: 'latest',
+    },
+    plugins: {
+      '@stylistic/js': stylisticJs,
+    },
+    rules: {
+      '@stylistic/js/indent': ['error', 2],
+      '@stylistic/js/linebreak-style': ['error', 'unix'],
+      '@stylistic/js/quotes': ['error', 'single'],
+      '@stylistic/js/semi': ['error', 'never'],
+      eqeqeq: 'error',
+      'no-trailing-spaces': 'error',
+      'object-curly-spacing': ['error', 'always'],
+      'arrow-spacing': ['error', { before: true, after: true }],
+    },
+  },
+  {
+    ignores: ['dist/**'],
+  },
+]
+```
+
 ##  Development -> Deployment
 
 1. Manage  CORS(Cross-Origin Resource Sharing). Install `cors`
