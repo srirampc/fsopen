@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for phone-book-backend-fso-4377 on 2024-12-28T19:13:24-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'phone-book-backend-fso-4377'
+primary_region = 'atl'
+
+[build]
+
+[env]
+  PORT = 3000
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
