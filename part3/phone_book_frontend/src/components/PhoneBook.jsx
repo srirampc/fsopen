@@ -10,7 +10,8 @@ const PhoneBook = (props) => {
         if (window.confirm(`Do you really want to delete ${person.name} ?`)) {
             personsService
                 .deletePerson(person.id)
-                .then(removedPerson => {
+                .then(removedState => {
+                    console.log("Removed", removedState)
                     const persons = props.persons.filter((p) => p.id != person.id)
                     props.setPersons(persons)
                     // alert(`Sucessfully deleted ${removedPerson.name}`)

@@ -27,35 +27,40 @@ const AddPerson = (props) => {
                     }, 5000)
                 })
         } else {
-            if (foundPerson.number === newPerson.number) {
-                props.setNotifyMessage(`${newPerson.name} is already added to the Phonebook with the same number ${newPerson.number}. `)
-            } else {
-                if (window.confirm(`${newPerson.name} is already added to the Phonebook. Do you want to replace old number with new number?`)) {
-                    //TODO(update)
-                    const updatedPerson = {
-                        "name": foundPerson.name,
-                        "id": foundPerson.id,
-                        "number": newPerson.number
-                    }
-                    personsService.update(foundPerson.id, updatedPerson)
-                        .then(returnedPerson => {
-                            props.setPersons(props.persons.map(n => n.id == foundPerson.id ? returnedPerson : n))
-                        })
-                        .catch(error => {
-                            console.log(error)
-                            const persons = props.persons.filter((p) => p.id != updatedPerson.id)
-                            props.setPersons(persons)
-                            props.setNotifyMessage([
-                                ` ${updatedPerson.name} was already removed from the Phone book`,
-                                "error"
-                            ])
-                            setTimeout(() => {
-                                props.setNotifyMessage([null, ""])
-                            }, 5000)
-                        })
-                    setNewPerson({ name: "", number: "" })
-                }
-            }
+            props.setNotifyMessage([`Update functionality is not implemented yet. `, "error"])
+            setTimeout(() => {
+                props.setNotifyMessage([null, ""])
+            }, 5000)
+
+            // if (foundPerson.number === newPerson.number) {
+            //     props.setNotifyMessage(`${newPerson.name} is already added to the Phonebook with the same number ${newPerson.number}. `, "error")
+            // } else {
+            //     if (window.confirm(`${newPerson.name} is already added to the Phonebook. Do you want to replace old number with new number?`)) {
+            //         //TODO(update)
+            //         const updatedPerson = {
+            //             "name": foundPerson.name,
+            //             "id": foundPerson.id,
+            //             "number": newPerson.number
+            //         }
+            //         personsService.update(foundPerson.id, updatedPerson)
+            //             .then(returnedPerson => {
+            //                 props.setPersons(props.persons.map(n => n.id == foundPerson.id ? returnedPerson : n))
+            //             })
+            //             .catch(error => {
+            //                 console.log(error)
+            //                 const persons = props.persons.filter((p) => p.id != updatedPerson.id)
+            //                 props.setPersons(persons)
+            //                 props.setNotifyMessage([
+            //                     ` ${updatedPerson.name} was already removed from the Phone book`,
+            //                     "error"
+            //                 ])
+            //                 setTimeout(() => {
+            //                     props.setNotifyMessage([null, ""])
+            //                 }, 5000)
+            //             })
+            //         setNewPerson({ name: "", number: "" })
+            //     }
+            // }
         }
     }
     const handlePersonChange = (event) => {

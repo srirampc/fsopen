@@ -1,4 +1,4 @@
-
+# Notes
 ##  Development -> Deployment
 
 1. Manage  CORS(Cross-Origin Resource Sharing). Install `cors`
@@ -93,8 +93,11 @@ $ flyctl ping -o personal
 ```sh
 fly apps list
 ```
-6. destroy app
+7. destroy app
 ```sh
 fly destory ${APP_ID}
 ```
-
+8. Add secrets
+```sh
+fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority"
+```

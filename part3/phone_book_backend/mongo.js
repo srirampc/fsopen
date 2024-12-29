@@ -1,7 +1,7 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URI
-
+const url = process.env.MONGODB_PHONEBOOK_URI
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
@@ -36,4 +36,3 @@ person.save().then(result => {
     console.log(`Added ${person_name} ${person_number} to PhoneBook`)
     mongoose.connection.close()
 })
-
