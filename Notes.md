@@ -179,3 +179,33 @@ fly destory ${APP_ID}
 ```sh
 fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority"
 ```
+
+## Using Typescript
+
+0. Initialize ts config
+1. mongodb with Typescript [doc](https://mongoosejs.com/docs/typescript.html)
+2. typescript specific libraries we need
+```
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.19.0"
+```
+2. All the types npm we need
+```
+    "@stylistic/eslint-plugin-js": "^2.12.1",
+    "@types/assert": "^1.5.11",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.10.3",
+    "@types/supertest": "^6.0.2",
+```
+3. Scripts
+```
+    "start": "NODE_ENV=production node build/index.js",
+    "build": "tsc",
+    "dev": "NODE_ENV=development nodemon index.ts",
+    "test": "npm run build && NODE_ENV=test node --test",
+```
