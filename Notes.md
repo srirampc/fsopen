@@ -13,6 +13,13 @@ Notes from the egghead.io course [React Beginners Guide](https://egghead.io/cour
 
 - Updater function to queue a [series of state updates](https://react.dev/learn/queueing-a-series-of-state-updates)
 - Ways to [NOT mutate arrays in useState](https://react.dev/learn/updating-arrays-in-state)
+- Sate v. Position in the [DOM tree](https://react.dev/learn/preserving-and-resetting-state) 
+    - State tied to position in DOM tree **NOTE: position in the DOM tree, not in the JSX**
+    - Same component at the same position preserves state
+    - Different component at the same position reset state
+    - DO NOT nest component function definitions. When nested, a different 
+      child component will be created every render of the parent component, thus
+      resetting the child's state. 
 
 ## Linting 
 
