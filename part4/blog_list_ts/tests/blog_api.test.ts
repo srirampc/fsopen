@@ -1,4 +1,4 @@
-import { test, after, beforeEach } from 'node:test'
+import { test, after, describe, beforeEach } from 'node:test'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../app'
@@ -10,127 +10,214 @@ import logger from '../utils/logger'
 
 const api = supertest(app)
 
-beforeEach(async () => {
-  await Blog.deleteMany({})
+describe('when there are blogs in the databse', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.initialBlogs)
 
-  const blogObjects = helper.initialBlogs.map((iblog) => new Blog(iblog))
-  const savePromises = blogObjects.map((nx) => nx.save())
-  await Promise.all(savePromises)
+    // const blogObjects = helper.initialBlogs.map((iblog) => new Blog(iblog))
+    // const savePromises = blogObjects.map((nx) => nx.save())
+    // await Promise.all(savePromises)
+  })
+
+  test('all blogs are returned as JSON via api/blogs', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    assert.strictEqual(response.body.length, 4)
+  })
+
+  test('verify that blog has `id` property and it matches `_id` in database', async () => {
+    const blogsAvailable = await helper.blogsAsInDB()
+    // console.log("Blogs Avail ", blogsAvailable)
+    const firstId: string = blogsAvailable[0]._id.toString()
+    logger.info(['First ID', firstId])
+
+    const response = await api.get('/api/blogs')
+    const blogsFromAPI: IBlog[] = response.body
+    // Check if id is defined
+    blogsFromAPI.forEach((item) => assert(item.id))
+
+    const foundBlog = blogsFromAPI.find((item) => item.id == firstId)
+    logger.info(['found Blog', foundBlog])
+
+    // Check if we can find the db blog id from the  API also
+    assert(foundBlog)
+    assert(foundBlog.id)
+    assert.strictEqual(foundBlog.id, firstId)
+  })
+
+  describe('view a specific blog', () => {
+    test('view a specific blog with a valid id succeeds', async () => {
+      const blogsAtStart = await helper.blogsInDB()
+
+      const blogToView = blogsAtStart[0]
+
+      const resultBlog = await api
+        .get(`/api/blogs/${blogToView.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      assert.deepStrictEqual(resultBlog.body, blogToView)
+    })
+
+    test('view fails with statuscode 404 if a blog does not exist', async () => {
+      const validNonexistingId = await helper.nonExistingId()
+
+      await api.get(`/api/blogs/${validNonexistingId}`).expect(404)
+    })
+
+    test('view fails with statuscode 400 when id is invalid', async () => {
+      const invalidId = '5a3d5da59070081a82a3445'
+
+      await api.get(`/api/blogs/${invalidId}`).expect(400)
+    })
+  })
+
+  describe('adding a new blog via post', () => {
+    test('post a new blog with valid details succeeds', async () => {
+      const newBlog = {
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 12,
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAtEnd = await helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+      const contents = blogsAtEnd.map((r) => r.title)
+      assert(contents.includes('Canonical string reduction'))
+    })
+
+    test('post a blog without no `likes` entry defaults to zero likes', async () => {
+      const newBlog = {
+        title: '2024 Link Clearance',
+        author: 'Raymond Chen',
+        url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
+        important: true,
+      }
+      const blogsAtBegin = await helper.blogsInDB()
+
+      const response = await api.post('/api/blogs').send(newBlog).expect(201)
+      const newBlogId = response.body.id
+      logger.info(['New Blog', newBlogId])
+      const blogsAtEnd = await helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length + 1)
+      const foundBlog = blogsAtEnd.find((item) => item.id == newBlogId)
+      assert.strictEqual(foundBlog?.likes, 0)
+    })
+
+    test('post a blog with no `title` returns 400 status', async () => {
+      const newBlog = {
+        author: 'Raymond Chen',
+        url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
+        important: true,
+      }
+      const blogsAtBegin = await helper.blogsInDB()
+
+      const response = await api.post('/api/blogs').send(newBlog).expect(400)
+      logger.info(['New Blog', response.body])
+      // check error
+      assert.strictEqual(
+        response.body.error,
+        'Blog validation failed: title: Path `title` is required.',
+      )
+      const blogsAtEnd = await helper.blogsInDB()
+      // check that database is not affected
+      assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length)
+    })
+
+    test('post blog with no `url` returns 400 status', async () => {
+      const newBlog = {
+        title: '2024 Link Clearance',
+        author: 'Raymond Chen',
+        important: true,
+      }
+      const blogsAtBegin = await helper.blogsInDB()
+
+      const response = await api.post('/api/blogs').send(newBlog).expect(400)
+      logger.info(['New Blog', response.body])
+      // check error
+      assert.strictEqual(
+        response.body.error,
+        'Blog validation failed: url: Path `url` is required.',
+      )
+      // check database is not updated
+      const blogsAtEnd = await helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length)
+    })
+  })
+
+  describe('update of a blog', () => {
+    test('update existing blog successfully', async () => {
+      const blogsAtStart = await helper.blogsInDB()
+      const blogToUpdate = blogsAtStart[1]
+      const likesAtStart = blogToUpdate.likes
+      blogToUpdate.likes += 10
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(200)
+      const blogsAtEnd = await helper.blogsInDB()
+      const updatedBlog = blogsAtEnd.find((item) => item.id == blogToUpdate.id)
+      assert(updatedBlog)
+      assert.strictEqual(updatedBlog.likes, likesAtStart + 10)
+    })
+
+    test('update fails with statuscode 404 if a blog does not exist', async () => {
+      const validNonexistingId = await helper.nonExistingId()
+
+      await api
+        .put(`/api/blogs/${validNonexistingId}`)
+        .send({
+          title: 'Test Blog',
+          author: 'Test Author',
+          url: 'http://example.com/test-blog-1',
+          likes: 1,
+        })
+        .expect(404)
+    })
+
+    test('update fails with statuscode 400 when id is invalid', async () => {
+      const invalidId = '5a3d5da59070081a82a3445'
+
+      await api
+        .put(`/api/blogs/${invalidId}`)
+        .send({
+          title: 'Test Blog',
+          author: 'Test Author',
+          url: 'http://example.com/test-blog-1',
+          likes: 1,
+        })
+        .expect(400)
+
+    })
+
+  })
+
+  describe('deletion of a blog', () => {
+    test('existing blog can be deleted successfully with status 204', async () => {
+      const blogsAtStart = await helper.blogsInDB()
+      const blogToDelete = blogsAtStart[0]
+
+      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+      const blogsAtEnd = await helper.blogsInDB()
+
+      const blogIds = blogsAtEnd.map((r) => r.id)
+      assert(!blogIds.includes(blogToDelete.id))
+
+      assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+    })
+  })
 })
-
-test('blogs are returned via the api', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
-
-test('there are four blogs', async () => {
-  const response = await api.get('/api/blogs')
-
-  assert.strictEqual(response.body.length, 4)
-})
-
-test('verify the unique identifier property id', async () => {
-  const blogsAvailable = await helper.blogsAsInDB()
-  // console.log("Blogs Avail ", blogsAvailable)
-  const firstId: string = blogsAvailable[0]._id.toString()
-  logger.info(['First ID', firstId])
-
-  const response = await api.get('/api/blogs')
-  const blogsFromAPI: IBlog[] = response.body
-  // Check if id is defined
-  blogsFromAPI.forEach((item) => assert(item.id))
-
-  const foundBlog = blogsFromAPI.find((item) => item.id == firstId)
-  logger.info(['found Blog', foundBlog])
-
-  // Check if we can find the db blog id from the  API also
-  assert(foundBlog)
-  assert(foundBlog.id)
-  assert.strictEqual(foundBlog.id, firstId)
-})
-
-test('post a new blog', async () => {
-  const newBlog = {
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 12,
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await helper.blogsInDB()
-  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
-
-  const contents = blogsAtEnd.map((r) => r.title)
-  assert(contents.includes('Canonical string reduction'))
-})
-
-test('blog without likes defaults to zero likes', async () => {
-  const newBlog = {
-    title: '2024 Link Clearance',
-    author: 'Raymond Chen',
-    url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
-    important: true,
-  }
-  const blogsAtBegin = await helper.blogsInDB()
-
-  const response = await api.post('/api/blogs').send(newBlog).expect(201)
-  const newBlogId = response.body.id
-  logger.info(['New Blog', newBlogId])
-  const blogsAtEnd = await helper.blogsInDB()
-  assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length + 1)
-  const foundBlog = blogsAtEnd.find((item) => item.id == newBlogId)
-  assert.strictEqual(foundBlog?.likes, 0)
-})
-
-test('blog without title returns error', async () => {
-  const newBlog = {
-    author: 'Raymond Chen',
-    url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
-    important: true,
-  }
-  const blogsAtBegin = await helper.blogsInDB()
-
-  const response = await api.post('/api/blogs').send(newBlog).expect(400)
-  logger.info(['New Blog', response.body])
-  // check error
-  assert.strictEqual(
-    response.body.error,
-    'Blog validation failed: title: Path `title` is required.',
-  )
-  const blogsAtEnd = await helper.blogsInDB()
-  // check that database is not affected
-  assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length)
-})
-
-test('blog without URL returns error', async () => {
-  const newBlog = {
-    title: '2024 Link Clearance',
-    author: 'Raymond Chen',
-    important: true,
-  }
-  const blogsAtBegin = await helper.blogsInDB()
-
-  const response = await api.post('/api/blogs').send(newBlog).expect(400)
-  logger.info(['New Blog', response.body])
-  // check error
-  assert.strictEqual(
-    response.body.error,
-    'Blog validation failed: url: Path `url` is required.',
-  )
-  // check database is not updated
-  const blogsAtEnd = await helper.blogsInDB()
-  assert.strictEqual(blogsAtEnd.length, blogsAtBegin.length)
-})
-
-
 
 after(async () => {
   await mongoose.connection.close()

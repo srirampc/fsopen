@@ -46,17 +46,21 @@ const blogsAsInDB = async () => {
   return blogs
 }
 
-
 const blogsInDB = async () => {
   const blogs = await Blog.find({})
   return blogs.map((blog) => blog.toJSON())
 }
 
 const nonExistingId = async () => {
-  const blog = new Blog({ title: 'willremovethissoon', author: 'xyz', url: '' })
-  await blog.save()
-  await blog.deleteOne()
-  return blog._id.toString()
+  const blog = new Blog({
+    title: 'willremovethissoon',
+    author: 'xyz',
+    url: 'https://example.com/blog-1',
+  })
+  const savedBlog = await blog.save()
+  const savedBlogId = savedBlog._id
+  await savedBlog.deleteOne()
+  return savedBlogId
 }
 
 export default {
