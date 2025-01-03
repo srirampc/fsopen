@@ -9,6 +9,7 @@ import logger from './utils/logger'
 import config from './utils/config'
 import middleware from './utils/middleware'
 import usersRouter from './controllers/users'
+import loginRouter from './controllers/login'
 
 const mongoUrl = config.MONGODB_BLOGS_URI ? config.MONGODB_BLOGS_URI : 'NODB'
 mongoose
@@ -23,13 +24,15 @@ mongoose
     logger.error([`Error connecting to MongoDB : ${error.message}`])
   })
 
+// Add middleware
 app.use(cors())
 app.use(express.json())
 
-// Add middleware
 app.use(morgan('combined'))
-app.use('/api/blogs', blogsRouter)
+app.use(middleware.tokenExtractor)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

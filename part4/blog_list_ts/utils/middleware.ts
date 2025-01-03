@@ -1,5 +1,6 @@
 import e from 'express'
 import logger from './logger'
+import jwt from 'jsonwebtoken'
 
 const requestLogger = (
   request: e.Request,
@@ -23,7 +24,7 @@ const errorHandler = (
   response: e.Response,
   next: e.NextFunction,
 ) => {
-  console.error(error.message)
+  console.error('ERROR: ', error.message)
 
   if (error.name === 'CastError') {
     response.status(400).send({ error: 'malformatted id' })
@@ -39,8 +40,47 @@ const errorHandler = (
   }
 }
 
+export interface BlogRequest extends e.Request {
+  token: string
+  user?: string
+}
+
+const tokenExtractor = (
+  request: e.Request,
+  response: e.Response,
+  next: e.NextFunction,
+) => {
+  // code that extracts the token
+  const req = request as BlogRequest
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    const token = authorization.replace('Bearer ', '')
+    req.token = token
+    // console.log('Req Token : ', req.token)
+  }
+
+  next()
+}
+
+const userExtractor = (
+  request: e.Request,
+  response: e.Response,
+  next: e.NextFunction,
+) => {
+  const req = request as BlogRequest
+  const decodedToken = jwt.verify(req.token, process.env.SECRET as string)
+  console.log('Token at user', decodedToken)
+  if (typeof decodedToken != 'string' && decodedToken.id) {
+    req.user = decodedToken.id
+  }
+
+  next()
+}
+
 export default {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
+  userExtractor
 }
