@@ -8,6 +8,7 @@ import blogsRouter from './controllers/blogs'
 import logger from './utils/logger'
 import config from './utils/config'
 import middleware from './utils/middleware'
+import usersRouter from './controllers/users'
 
 const mongoUrl = config.MONGODB_BLOGS_URI ? config.MONGODB_BLOGS_URI : 'NODB'
 mongoose
@@ -28,6 +29,7 @@ app.use(express.json())
 // Add middleware
 app.use(morgan('combined'))
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

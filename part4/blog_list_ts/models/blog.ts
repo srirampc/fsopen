@@ -1,10 +1,11 @@
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 export interface IBlog {
   title: string
   author: string
   url: string
   likes: number
   id?: string
+  user?: Types.ObjectId
 }
 
 const blogSchema = new mongoose.Schema<IBlog>({
@@ -12,11 +13,17 @@ const blogSchema = new mongoose.Schema<IBlog>({
   author: String,
   url: {type: String, required: true},
   likes: { type: Number, default: 0 },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
 })
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
+    returnedObject.user = returnedObject.user.id.toString()
     delete returnedObject._id
     delete returnedObject.__v
   },

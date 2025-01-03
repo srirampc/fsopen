@@ -1,4 +1,4 @@
-import { test, after, describe, beforeEach } from 'node:test'
+import { test, after, describe, before } from 'node:test'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../app'
@@ -7,18 +7,43 @@ import Blog from '../models/blog'
 import helper from './test_helper'
 import { IBlog } from '../models/blog'
 import logger from '../utils/logger'
+import dash from 'lodash'
 
 const api = supertest(app)
+before(async () => {
+  // Delete blogs
+  await Blog.deleteMany({})
+
+  // user id create only if not found
+  const testUserIds = (
+    await Promise.all(
+      helper.blogTestUsers.map((ux) => {
+        return helper.findOrCreateUser(ux)
+      }),
+    )
+  ).map((ux) => (ux ? ux.id : ''))
+
+  //
+  await Blog.insertMany(
+    dash.zipWith(
+      helper.initialBlogs,
+      testUserIds.concat(testUserIds),
+      (blog, uid) => {
+        return { ...blog, user: uid }
+      },
+    ),
+  )
+})
 
 describe('when there are blogs in the databse', () => {
-  beforeEach(async () => {
-    await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
-
-    // const blogObjects = helper.initialBlogs.map((iblog) => new Blog(iblog))
-    // const savePromises = blogObjects.map((nx) => nx.save())
-    // await Promise.all(savePromises)
-  })
+  // beforeEach(async () => {
+  //   await Blog.deleteMany({})
+  //   // await Blog.insertMany(helper.initialBlogs)
+  //
+  //   const blogObjects = helper.initialBlogs.map((iblog) => new Blog(iblog))
+  //   const savePromises = blogObjects.map((nx) => nx.save())
+  //   await Promise.all(savePromises)
+  // })
 
   test('all blogs are returned as JSON via api/blogs', async () => {
     const response = await api
@@ -63,7 +88,7 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('view fails with statuscode 404 if a blog does not exist', async () => {
-      const validNonexistingId = await helper.nonExistingId()
+      const validNonexistingId = await helper.nonExistingBlogId()
 
       await api.get(`/api/blogs/${validNonexistingId}`).expect(404)
     })
@@ -75,13 +100,15 @@ describe('when there are blogs in the databse', () => {
     })
   })
 
-  describe('adding a new blog via post', () => {
+  describe('addition of a new blog via post', () => {
     test('post a new blog with valid details succeeds', async () => {
+      const userId = await helper.findTestBlogsUser()
       const newBlog = {
         title: 'Canonical string reduction',
         author: 'Edsger W. Dijkstra',
         url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
         likes: 12,
+        user: userId
       }
 
       await api
@@ -98,11 +125,13 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('post a blog without no `likes` entry defaults to zero likes', async () => {
+      const userId = await helper.findTestBlogsUser(1)
       const newBlog = {
         title: '2024 Link Clearance',
         author: 'Raymond Chen',
         url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
         important: true,
+        user: userId
       }
       const blogsAtBegin = await helper.blogsInDB()
 
@@ -116,10 +145,12 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('post a blog with no `title` returns 400 status', async () => {
+      const userId = await helper.findTestBlogsUser(1)
       const newBlog = {
         author: 'Raymond Chen',
         url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
         important: true,
+        user: userId
       }
       const blogsAtBegin = await helper.blogsInDB()
 
@@ -136,10 +167,12 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('post blog with no `url` returns 400 status', async () => {
+      const userId = await helper.findTestBlogsUser()
       const newBlog = {
         title: '2024 Link Clearance',
         author: 'Raymond Chen',
         important: true,
+        user: userId
       }
       const blogsAtBegin = await helper.blogsInDB()
 
@@ -173,7 +206,8 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('update fails with statuscode 404 if a blog does not exist', async () => {
-      const validNonexistingId = await helper.nonExistingId()
+      const userId = await helper.findTestBlogsUser()
+      const validNonexistingId = await helper.nonExistingBlogId()
 
       await api
         .put(`/api/blogs/${validNonexistingId}`)
@@ -182,12 +216,14 @@ describe('when there are blogs in the databse', () => {
           author: 'Test Author',
           url: 'http://example.com/test-blog-1',
           likes: 1,
+          user: userId
         })
         .expect(404)
     })
 
     test('update fails with statuscode 400 when id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
+      const userId = await helper.findTestBlogsUser(1)
 
       await api
         .put(`/api/blogs/${invalidId}`)
@@ -196,11 +232,10 @@ describe('when there are blogs in the databse', () => {
           author: 'Test Author',
           url: 'http://example.com/test-blog-1',
           likes: 1,
+          user: userId
         })
         .expect(400)
-
     })
-
   })
 
   describe('deletion of a blog', () => {
@@ -220,5 +255,11 @@ describe('when there are blogs in the databse', () => {
 })
 
 after(async () => {
+  await Blog.deleteMany({})
+  await Promise.all(
+    helper.blogTestUsers.map((ux) => {
+      return helper.findAndDeleteUser(ux)
+    }),
+  )
   await mongoose.connection.close()
 })
