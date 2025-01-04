@@ -8,17 +8,19 @@ import helper from './test_helper'
 import { IBlog } from '../models/blog'
 import logger from '../utils/logger'
 import dash from 'lodash'
+import bcrypt from 'bcrypt'
 
 const api = supertest(app)
 before(async () => {
   // Delete blogs
   await Blog.deleteMany({})
 
+  const passwordHash = await bcrypt.hash('root', 10)
   // user id create only if not found
   const testUserIds = (
     await Promise.all(
       helper.blogTestUsers.map((ux) => {
-        return helper.findOrCreateUser(ux)
+        return helper.findOrCreateUser({ ...ux, passwordHash })
       }),
     )
   ).map((ux) => (ux ? ux.id : ''))
@@ -102,17 +104,19 @@ describe('when there are blogs in the databse', () => {
 
   describe('addition of a new blog via post', () => {
     test('post a new blog with valid details succeeds', async () => {
-      const userId = await helper.findTestBlogsUser()
+      const userId = await helper.findTestBlogsUser(0)
       const newBlog = {
         title: 'Canonical string reduction',
         author: 'Edsger W. Dijkstra',
         url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
         likes: 12,
-        user: userId
+        user: userId,
       }
+      const loginToken = await helper.loginTestBlogsUser(api, 0)
 
       await api
         .post('/api/blogs')
+        .auth(loginToken, { type: 'bearer' })
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -131,11 +135,16 @@ describe('when there are blogs in the databse', () => {
         author: 'Raymond Chen',
         url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
         important: true,
-        user: userId
+        user: userId,
       }
       const blogsAtBegin = await helper.blogsInDB()
 
-      const response = await api.post('/api/blogs').send(newBlog).expect(201)
+      const loginToken = await helper.loginTestBlogsUser(api, 1)
+      const response = await api
+        .post('/api/blogs')
+        .auth(loginToken, { type: 'bearer' })
+        .send(newBlog)
+        .expect(201)
       const newBlogId = response.body.id
       logger.info(['New Blog', newBlogId])
       const blogsAtEnd = await helper.blogsInDB()
@@ -150,11 +159,16 @@ describe('when there are blogs in the databse', () => {
         author: 'Raymond Chen',
         url: 'https://devblogs.microsoft.com/oldnewthing/20241231-01/?p=110698',
         important: true,
-        user: userId
+        user: userId,
       }
       const blogsAtBegin = await helper.blogsInDB()
 
-      const response = await api.post('/api/blogs').send(newBlog).expect(400)
+      const loginToken = await helper.loginTestBlogsUser(api, 1)
+      const response = await api
+        .post('/api/blogs')
+        .auth(loginToken, { type: 'bearer' })
+        .send(newBlog)
+        .expect(400)
       logger.info(['New Blog', response.body])
       // check error
       assert.strictEqual(
@@ -167,16 +181,21 @@ describe('when there are blogs in the databse', () => {
     })
 
     test('post blog with no `url` returns 400 status', async () => {
-      const userId = await helper.findTestBlogsUser()
+      const userId = await helper.findTestBlogsUser(0)
       const newBlog = {
         title: '2024 Link Clearance',
         author: 'Raymond Chen',
         important: true,
-        user: userId
+        user: userId,
       }
       const blogsAtBegin = await helper.blogsInDB()
 
-      const response = await api.post('/api/blogs').send(newBlog).expect(400)
+      const loginToken = await helper.loginTestBlogsUser(api, 0)
+      const response = await api
+        .post('/api/blogs')
+        .auth(loginToken, { type: 'bearer' })
+        .send(newBlog)
+        .expect(400)
       logger.info(['New Blog', response.body])
       // check error
       assert.strictEqual(
@@ -195,8 +214,10 @@ describe('when there are blogs in the databse', () => {
       const blogToUpdate = blogsAtStart[1]
       const likesAtStart = blogToUpdate.likes
       blogToUpdate.likes += 10
+      const loginToken = await helper.loginTestBlogsUser(api, 1)
       await api
         .put(`/api/blogs/${blogToUpdate.id}`)
+        .auth(loginToken, { type: 'bearer' })
         .send(blogToUpdate)
         .expect(200)
       const blogsAtEnd = await helper.blogsInDB()
@@ -209,41 +230,49 @@ describe('when there are blogs in the databse', () => {
       const userId = await helper.findTestBlogsUser()
       const validNonexistingId = await helper.nonExistingBlogId()
 
+      const loginToken = await helper.loginTestBlogsUser(api, 0)
       await api
         .put(`/api/blogs/${validNonexistingId}`)
+        .auth(loginToken, { type: 'bearer' })
         .send({
           title: 'Test Blog',
           author: 'Test Author',
           url: 'http://example.com/test-blog-1',
           likes: 1,
-          user: userId
+          user: userId,
         })
-        .expect(404)
+        .expect(401)
     })
 
     test('update fails with statuscode 400 when id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
       const userId = await helper.findTestBlogsUser(1)
 
+      const loginToken = await helper.loginTestBlogsUser(api, 1)
       await api
         .put(`/api/blogs/${invalidId}`)
+        .auth(loginToken, { type: 'bearer' })
         .send({
           title: 'Test Blog',
           author: 'Test Author',
           url: 'http://example.com/test-blog-1',
           likes: 1,
-          user: userId
+          user: userId,
         })
         .expect(400)
     })
   })
 
-  describe('deletion of a blog', () => {
+  describe('deletion of a blog', async () => {
     test('existing blog can be deleted successfully with status 204', async () => {
       const blogsAtStart = await helper.blogsInDB()
       const blogToDelete = blogsAtStart[0]
 
-      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+      const loginToken = await helper.loginTestBlogsUser(api, 0)
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .auth(loginToken, { type: 'bearer' })
+        .expect(204)
       const blogsAtEnd = await helper.blogsInDB()
 
       const blogIds = blogsAtEnd.map((r) => r.id)

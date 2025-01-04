@@ -2,20 +2,18 @@ import Blog from '../models/blog'
 import { IBlog } from '../models/blog'
 import User, { IUser } from '../models/user'
 import bcrypt from 'bcrypt'
+import TestAgent from 'supertest/lib/agent'
 
 const blogTestUsers: IUser[] = [
   {
     username: 'jenil',
     name: 'Jennifer Lawrence',
     blogs: [],
-    passwordHash: '$2b$10$UPiYfCJzsaPLypfjKIXNUexMju1CE6ghde7wC0B8EDZS',
   },
   {
     username: 'sofia',
     name: 'Sofia Vergara',
     blogs: [],
-    passwordHash:
-      '$2b$10$rEVHZ3eTmKwSy0iKUSqcyeiyXNAn5keqhTn2s5iGQyIz9IXUnVJd.',
   },
 ]
 
@@ -65,7 +63,7 @@ const findTestBlogsUser = async (idx = 0) => {
   const firstUser = await User.findOne({
     username: blogTestUsers[idx].username,
   })
-  // console.log("First User", firstUser)
+  // logger.info(["First User", firstUser])
   return firstUser?._id ? firstUser._id.toString() : 'missing-user'
 }
 
@@ -85,7 +83,7 @@ const nonExistingBlogId = async () => {
     title: 'willremovethissoon',
     author: 'xyz',
     url: 'https://example.com/blog-1',
-    user: userId
+    user: userId,
   })
   const savedBlog = await blog.save()
   const savedBlogId = savedBlog._id
@@ -128,6 +126,14 @@ const findAndDeleteUser = async (ux: IUser) => {
   }
 }
 
+const loginTestBlogsUser = async (stapi: TestAgent, idx = 0) => {
+  const response = await stapi.post('/api/login').send({
+    username: blogTestUsers[idx].username,
+    password: 'root',
+  })
+  return response.body.token
+}
+
 export default {
   initialBlogs,
   blogTestUsers,
@@ -140,5 +146,6 @@ export default {
   usersInDb,
   nonExistingUserId,
   findOrCreateUser,
-  findAndDeleteUser
+  findAndDeleteUser,
+  loginTestBlogsUser
 }

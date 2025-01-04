@@ -68,10 +68,12 @@ const userExtractor = (
   next: e.NextFunction,
 ) => {
   const req = request as BlogRequest
-  const decodedToken = jwt.verify(req.token, process.env.SECRET as string)
-  console.log('Token at user', decodedToken)
-  if (typeof decodedToken != 'string' && decodedToken.id) {
-    req.user = decodedToken.id
+  if (req.token) {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET as string)
+    console.log('Token at user', decodedToken)
+    if (typeof decodedToken != 'string' && decodedToken.id) {
+      req.user = decodedToken.id
+    }
   }
 
   next()
@@ -82,5 +84,5 @@ export default {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor
+  userExtractor,
 }

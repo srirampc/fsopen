@@ -2,7 +2,6 @@ import { Router } from 'express'
 import Blog, { IBlog } from '../models/blog'
 import logger from '../utils/logger'
 import User from '../models/user'
-import jwt from 'jsonwebtoken'
 import express from 'express'
 import { BlogRequest } from '../utils/middleware'
 
@@ -16,12 +15,11 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request: express.Request, response) => {
   const body: IBlog = request.body
   const req = request as BlogRequest
-  // console.log('Token at post', req.token)
-  const decodedToken = jwt.verify(req.token, process.env.SECRET as string)
-  if (typeof decodedToken == 'string' || !decodedToken.id) {
+  // console.log('Token at post', req.user)
+  if (!req.user) {
     response.status(401).json({ error: 'token invalid' })
   } else {
-    const user = await User.findById(decodedToken.id)
+    const user = await User.findById(req.user)
     if (user) {
       const blog = new Blog({
         title: body.title,
@@ -31,7 +29,7 @@ blogsRouter.post('/', async (request: express.Request, response) => {
         user: user.id,
       })
       const savedBlog = await blog.save()
-      console.log(savedBlog)
+      // console.log("Saved Blog", savedBlog)
       user.blogs = user.blogs.concat(savedBlog._id)
       await user.save()
       response.status(201).json(savedBlog)

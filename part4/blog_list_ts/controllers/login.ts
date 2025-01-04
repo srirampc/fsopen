@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import User from '../models/user'
 import e from 'express'
+import logger from '../utils/logger'
 
 const loginRouter = e.Router()
 
@@ -13,6 +14,7 @@ loginRouter.post('/', async (request: e.Request, response: e.Response) => {
     ? await bcrypt.compare(password, user.passwordHash)
     : false
 
+  logger.info(['Authenticate', username, user, passwordCorrect])
   if (!(user && passwordCorrect)) {
     response.status(401).json({
       error: 'invalid username or password',
