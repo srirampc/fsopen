@@ -33,3 +33,14 @@ export interface IPropsNotification {
     message: string | null 
     className: string
 }
+
+export interface IPropsLogout {
+    user: IUser | null,
+    setUser: Dispatch<SetStateAction<IUser | null>>
+}
+
+export interface IPropsAddBlog {
+    blogs: IBlog[],
+    setBlogs: Dispatch<SetStateAction<IBlog[]>>
+    setNotifyMessage: Dispatch<IMessage>
+}

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
 import Login from './components/Login.tsx'
 import Notification from './components/Notification.tsx'
 import blogService from './services/blogs'
+import loginService from './services/login'
 import { IBlog, IUser, IMessage } from './ifx'
+import Logout from './components/Logout.tsx'
+import AddBlog from './components/AddBlog.tsx'
+import BlogList from './components/BlogList.tsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState<IBlog[]>([])
@@ -18,7 +21,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogsUser')
+    const loggedUserJSON = window.localStorage.getItem(loginService.tokenKey)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -26,13 +29,16 @@ const App = () => {
     }
   }, [])
 
-  const showBlogs = () => {
+  const userContent = () => {
     return (
       <>
-        <p> {user?.name} logged in` </p>
-        {blogs.map((blog: IBlog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
+        <Logout user={user} setUser={setUser} />
+        <AddBlog
+          blogs={blogs}
+          setBlogs={setBlogs}
+          setNotifyMessage={setNotifyMessage}
+        />
+        <BlogList blogs={blogs} />
       </>
     )
   }
@@ -44,7 +50,7 @@ const App = () => {
         message={notifyMessage.message}
         className={notifyMessage.className}
       />
-      {user == null ? <Login user={user} setUser={setUser} /> : showBlogs()}
+      {user ? userContent() : <Login user={user} setUser={setUser} />}
     </div>
   )
 }

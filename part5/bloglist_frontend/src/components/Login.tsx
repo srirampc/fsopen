@@ -15,7 +15,7 @@ const Login = (props: IPropsLogin) => {
         password,
       })) as IUser
       console.log(user)
-      window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
+      window.localStorage.setItem(loginService.tokenKey, JSON.stringify(user))
       if (user.token) {
         blogService.setToken(user.token)
       }

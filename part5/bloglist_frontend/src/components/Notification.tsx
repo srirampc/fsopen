@@ -1,4 +1,3 @@
-
 import { IPropsNotification } from "../ifx"
 
 const Notification = ({ message , className }: IPropsNotification) => {
