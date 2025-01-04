@@ -12,7 +12,7 @@ if [ "$1" != 'remote' ] && [ "$1" != 'local' ]; then
 fi
 
 if [ "$1" = 'remote' ] ; then
-RSYNC_CMD="rsync -r ${LOCAL_DIR} ${REMOTE_DIR} --exclude=node_modules  --exclude=dist --exclude=build --exclude=package-lock.json --delete"
+RSYNC_CMD="rsync -r ${LOCAL_DIR} ${REMOTE_DIR} --exclude=node_modules  --exclude=dist --exclude=build --exclude=package-lock.json"
 else
 RSYNC_CMD="rsync -r ${REMOTE_DIR} ${LOCAL_DIR} --exclude=node_modules --exclude=dist --exclude=build --exclude=package-lock.json"
 fi

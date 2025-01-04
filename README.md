@@ -40,3 +40,9 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 |-|-|
 | [4.1 -- 4.2](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-1-4-2) and [4.3 -- 4.7](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-3-4-7) | [Blog List](part4/blog_list/) |
 | [4.8 -- 4.12](https://fullstackopen.com/en/part4/testing_the_backend#exercises-4-8-4-12), [4.13 -- 4.14](https://fullstackopen.com/en/part4/testing_the_backend#exercises-4-13-4-14), [4.15 -- 4.22](https://fullstackopen.com/en/part4/token_authentication#exercises-4-15-4-23) | [Blog List TS](part4/blog_list_ts)
+
+## Part 5
+
+| Problem Statements | Solutions |
+|-|-|
+|[5.1 -- 5.4](https://fullstackopen.com/en/part5/login_in_frontend#exercises-5-1-5-4)| [Solution to 5.1](part5/bloglist_frontend)|
