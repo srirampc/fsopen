@@ -15,22 +15,22 @@ Solutions for the exercises for the course:
 
 | Problem Statements | Solutions |
 |-|-|
-| [1.1 -- 1.2](https://fullstackopen.com/en/part1/introduction_to_react#exercises-1-1-1-2)| [1.1](part1/exercise01) and [1.2](part1/exercise02) |
-| [1.3 -- 1.5](https://fullstackopen.com/en/part1/java_script#exercises-1-3-1-5) | [1.3](part1/exercise03), [1.4](part1/exercise04) and [1.5](part1/exercise05)|
+| [1.1 -- 1.2](https://fullstackopen.com/en/part1/introduction_to_react#exercises-1-1-1-2)| [1.1](part1/exercise01) &amp; [1.2](part1/exercise02) |
+| [1.3 -- 1.5](https://fullstackopen.com/en/part1/java_script#exercises-1-3-1-5) | <ul> <li> [1.3](part1/exercise03) </li> <li> [1.4](part1/exercise04) </li> <li> [1.5](part1/exercise05) </li> </ul> |
 
 ### Part 2
 
 | Problem Statements | Solutions |
 |-|-|
 | [2.1 -- 2.5](https://fullstackopen.com/en/part2/rendering_a_collection_modules#exercises-2-1-2-5) | [Course Information](part2/course_info) |
-| [2.6 -- 2.10](https://fullstackopen.com/en/part2/forms#exercises-2-6-2-10), [2.11](https://fullstackopen.com/en/part2/getting_data_from_server#exercise-2-11) , [2.12 -- 2.15](https://fullstackopen.com/en/part2/altering_data_in_server#exercises-2-12-2-15) and [2.16 -- 2.17](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-16-2-17) | [Phone Book](part2/phone_book) |
+| <ul> <li> [2.6 -- 2.10](https://fullstackopen.com/en/part2/forms#exercises-2-6-2-10) </li> <li> [2.11](https://fullstackopen.com/en/part2/getting_data_from_server#exercise-2-11) </li> <li> [2.12 -- 2.15](https://fullstackopen.com/en/part2/altering_data_in_server#exercises-2-12-2-15) </li> <li> [2.16 -- 2.17](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-16-2-17) </li> </ul> | [Phone Book](part2/phone_book) |
 | [2.18 -- 2.20](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-18-2-20) | [Countries](/part2/countries)
 
 ### Part 3
 
 | Problem Statements | Solutions |
 |-|-|
-| [3.1 -- 3.6](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-1-3-6), [3.7 -- 3.8](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8), [3.9 -- 3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11), [3.12](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12), [3.13 -- 3.14](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14), [3.15 -- 3.18](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-15-3-18), [3.19 -- 3.21](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21) and [3.22](https://fullstackopen.com/en/part3/validation_and_es_lint#exercise-3-22) | [Phone Book Backend](part3/phone_book_backend) and [Phone Book Frontend](part3/phone_book_frontend) |
+| <ul> <li> [3.1 -- 3.6](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-1-3-6) </li> <li> [3.7 -- 3.8](https://fullstackopen.com/en/part3/node_js_and_express#exercises-3-7-3-8) </li> <li> [3.9 -- 3.11](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11) </li> <li> [3.12](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercise-3-12) </li> <li> [3.13 -- 3.14](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-13-3-14)</li> <li> [3.15 -- 3.18](https://fullstackopen.com/en/part3/saving_data_to_mongo_db#exercises-3-15-3-18) </li> <li> [3.19 -- 3.21](https://fullstackopen.com/en/part3/validation_and_es_lint#exercises-3-19-3-21) </li> <li> [3.22](https://fullstackopen.com/en/part3/validation_and_es_lint#exercise-3-22) </li> </ul> | [Phone Book Backend](part3/phone_book_backend) and [Phone Book Frontend](part3/phone_book_frontend) |
 
 ### Part 4
 
