@@ -60,6 +60,16 @@ const App = () => {
     )
   }
 
+  const showLoginForm = () => {
+    return (
+      <Login
+        user={user}
+        setUser={setUser}
+        setNotifyMessage={setNotifyMessage}
+      />
+    )
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -67,7 +77,7 @@ const App = () => {
         message={notifyMessage.message}
         className={notifyMessage.className}
       />
-      {user ? userContent() : <Login user={user} setUser={setUser} />}
+      {user ? userContent() : showLoginForm()}
     </div>
   )
 }

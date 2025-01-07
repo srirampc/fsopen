@@ -11,7 +11,7 @@ const BlogList = (props: IPropsBlogList) => {
         console.log('Updated Blog : ', rBlog)
         props.setBlogs(
           props.blogs
-            .map((item) => (item.id != uBlog.id ? item : uBlog))
+            .map((item) => (item.id !== uBlog.id ? item : uBlog))
             .sort((a, b) => b.likes - a.likes),
         )
         const nMsg = `The blog ${rBlog.title} was sucessfully updated in the server`
@@ -38,7 +38,7 @@ const BlogList = (props: IPropsBlogList) => {
         console.log('Deleted Blog ')
         props.setBlogs(
           props.blogs
-            .filter((item) => item.id != dxBlog.id)
+            .filter((item) => item.id !== dxBlog.id)
             .sort((a, b) => b.likes - a.likes),
         )
         const nMsg = `The blog ${dxBlog.title} was sucessfully deleted in the server`

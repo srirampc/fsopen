@@ -10,10 +10,20 @@ const Login = (props: IPropsLogin) => {
     event.preventDefault()
     console.log('login envent')
     try {
-      const user = (await loginService.login({
-        username,
-        password,
-      })) as IUser
+      const user = (await loginService
+        .login({
+          username,
+          password,
+        })
+        .catch((error) => {
+          const errMessage = error.response
+            ? error.response.data.error
+            : error.message
+          props.setNotifyMessage({ message: errMessage, className: 'error' })
+          setTimeout(() => {
+            props.setNotifyMessage({ message: null, className: '' })
+          }, 5000)
+        })) as IUser
       console.log(user)
       window.localStorage.setItem(loginService.tokenKey, JSON.stringify(user))
       if (user.token) {
@@ -22,7 +32,9 @@ const Login = (props: IPropsLogin) => {
       props.setUser(user)
       setUsername(username)
       setPassword(password)
-    } catch (error) {}
+    } catch (error) {
+      console.log('Error : ', error)
+    }
   }
 
   return (

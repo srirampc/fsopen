@@ -38,6 +38,7 @@ export interface IPropsBlogList {
 export interface IPropsLogin {
   user: IUser | null
   setUser: Dispatch<SetStateAction<IUser | null>>
+  setNotifyMessage: Dispatch<IMessage>
 }
 
 export interface IPropsNotification {
