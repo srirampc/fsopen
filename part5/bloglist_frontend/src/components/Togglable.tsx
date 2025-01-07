@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from 'react'
 import { IPropsTogglable, IHandleTogglable } from '../ifx'
+import PropTypes from 'prop-types'
 
 //const Togglable = (props: IPropsTogglable) => {
 const Togglable = forwardRef<IHandleTogglable, IPropsTogglable>((props, ref) => {
@@ -31,5 +32,8 @@ const Togglable = forwardRef<IHandleTogglable, IPropsTogglable>((props, ref) => 
   )
 })
 
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
 
 export default Togglable

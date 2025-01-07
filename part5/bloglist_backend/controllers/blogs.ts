@@ -40,7 +40,10 @@ blogsRouter.post('/', async (request: express.Request, response) => {
 })
 
 blogsRouter.get('/:id', async (request, response) => {
-  const note = await Blog.findById(request.params.id)
+  const note = await Blog.findById(request.params.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
   if (note) {
     response.json(note)
   } else {
@@ -56,22 +59,25 @@ blogsRouter.put(
     console.log('Token at post', req.user, updBlog?.user?.toString())
     if (!updBlog || !updBlog.user) {
       response.status(401).json({ error: 'blog id invalid' })
-    } else if (req.user != updBlog.user.toString()) {
-      response.status(401).json({ error: 'token invalid' })
     } else {
+      logger.info([`Request user: ${req.user}; Update user : ${updBlog.user}`])
       const { title, author, url, likes } = request.body
 
       const updatedNote = await Blog.findByIdAndUpdate(
         request.params.id,
         { title, author, url, likes },
         { new: true, runValidators: true, context: 'query' },
-      )
+      ).populate('user', {username: 1, name: 1})
       if (updatedNote) {
         response.json(updatedNote)
       } else {
         response.status(404).end()
       }
     }
+
+    // else if (req.user != updBlog.user.toString()) {
+    //   response.status(401).json({ error: 'token invalid' })
+    // } 
   },
 )
 

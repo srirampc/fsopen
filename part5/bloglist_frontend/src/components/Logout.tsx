@@ -9,8 +9,8 @@ const Logout = (props: IPropsLogout) => {
 
   return (
     <div>
-      <p>{props.user?.name} logged in`. </p>
       <form onSubmit={handleLogout}>
+        {props.user?.name} logged in. &nbsp;
         <button type="submit">logout</button>
       </form>
     </div>

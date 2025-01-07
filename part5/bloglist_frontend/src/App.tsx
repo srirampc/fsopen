@@ -18,7 +18,11 @@ const App = () => {
   const [user, setUser] = useState<IUser | null>(null)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs as IBlog[]))
+    blogService.getAll().then((blogs) => {
+      const inBlogs = blogs as IBlog[]
+      inBlogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(inBlogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -33,7 +37,7 @@ const App = () => {
   const addBlogRef = useRef<IHandleTogglable>(null)
   const updateUI = () => {
     addBlogRef.current?.toggleVisibility()
-}
+  }
   const userContent = () => {
     return (
       <>
@@ -46,7 +50,12 @@ const App = () => {
             updateUI={updateUI}
           />
         </Togglable>
-        <BlogList blogs={blogs} />
+        <BlogList
+          blogs={blogs}
+          setBlogs={setBlogs}
+          user={user}
+          setNotifyMessage={setNotifyMessage}
+        />
       </>
     )
   }

@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch, ReactNode } from "react"
+import { SetStateAction, Dispatch, ReactNode } from 'react'
 
 export interface IBlog {
   title: string
@@ -6,6 +6,7 @@ export interface IBlog {
   url: string
   likes: number
   id?: string
+  user?: IUser
 }
 
 export interface IUser {
@@ -22,28 +23,38 @@ export interface IMessage {
 
 export interface IPropsBlog {
   blog: IBlog
+  updateBlog: (updatedBlog: IBlog) => void
+  deleteBlog: (blogToDelete: IBlog) => void
+  user: IUser | null
+}
+
+export interface IPropsBlogList {
+  blogs: IBlog[]
+  setBlogs: Dispatch<SetStateAction<IBlog[]>>
+  user: IUser | null
+  setNotifyMessage: Dispatch<IMessage>
 }
 
 export interface IPropsLogin {
-    user: IUser | null,
-    setUser: Dispatch<SetStateAction<IUser | null>>
+  user: IUser | null
+  setUser: Dispatch<SetStateAction<IUser | null>>
 }
 
 export interface IPropsNotification {
-    message: string | null 
-    className: string
+  message: string | null
+  className: string
 }
 
 export interface IPropsLogout {
-    user: IUser | null,
-    setUser: Dispatch<SetStateAction<IUser | null>>
+  user: IUser | null
+  setUser: Dispatch<SetStateAction<IUser | null>>
 }
 
 export interface IPropsAddBlog {
-    blogs: IBlog[],
-    setBlogs: Dispatch<SetStateAction<IBlog[]>>
-    setNotifyMessage: Dispatch<IMessage>
-    updateUI: () => void
+  blogs: IBlog[]
+  setBlogs: Dispatch<SetStateAction<IBlog[]>>
+  setNotifyMessage: Dispatch<IMessage>
+  updateUI: () => void
 }
 
 export interface IPropsTogglable {
@@ -54,4 +65,3 @@ export interface IPropsTogglable {
 export interface IHandleTogglable {
   toggleVisibility: () => void
 }
-

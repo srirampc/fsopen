@@ -9,22 +9,22 @@ Solutions for the exercises for the course:
 
 | Problem Statements | Solutions |
 |-|-|
-| [0.4 -- 0.6](https://fullstackopen.com/en/part0/fundamentals_of_web_apps#exercises-0-1-0-6) | [Solutions to 0.4, 0.5 and 0.6](part1/) |
+| <ul><li> [0.4 -- 0.6](https://fullstackopen.com/en/part0/fundamentals_of_web_apps#exercises-0-1-0-6) </li></ul>| [Solutions to 0.4, 0.5 and 0.6](part1/) |
 
 ### Part 1
 
 | Problem Statements | Solutions |
 |-|-|
-| [1.1 -- 1.2](https://fullstackopen.com/en/part1/introduction_to_react#exercises-1-1-1-2)| [1.1](part1/exercise01) &amp; [1.2](part1/exercise02) |
-| [1.3 -- 1.5](https://fullstackopen.com/en/part1/java_script#exercises-1-3-1-5) | <ul> <li> [1.3](part1/exercise03) </li> <li> [1.4](part1/exercise04) </li> <li> [1.5](part1/exercise05) </li> </ul> |
+| <ul><li>[1.1 -- 1.2](https://fullstackopen.com/en/part1/introduction_to_react#exercises-1-1-1-2) </li></ul>| [1.1](part1/exercise01) &amp; [1.2](part1/exercise02) |
+| <ul><li> [1.3 -- 1.5](https://fullstackopen.com/en/part1/java_script#exercises-1-3-1-5) </li></ul>| <ul> <li> [1.3](part1/exercise03) </li> <li> [1.4](part1/exercise04) </li> <li> [1.5](part1/exercise05) </li> </ul> |
 
 ### Part 2
 
 | Problem Statements | Solutions |
 |-|-|
-| [2.1 -- 2.5](https://fullstackopen.com/en/part2/rendering_a_collection_modules#exercises-2-1-2-5) | [Course Information](part2/course_info) |
+| <ul><li>[2.1 -- 2.5](https://fullstackopen.com/en/part2/rendering_a_collection_modules#exercises-2-1-2-5) </li></ul> | [Course Information](part2/course_info) |
 | <ul> <li> [2.6 -- 2.10](https://fullstackopen.com/en/part2/forms#exercises-2-6-2-10) </li> <li> [2.11](https://fullstackopen.com/en/part2/getting_data_from_server#exercise-2-11) </li> <li> [2.12 -- 2.15](https://fullstackopen.com/en/part2/altering_data_in_server#exercises-2-12-2-15) </li> <li> [2.16 -- 2.17](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-16-2-17) </li> </ul> | [Phone Book](part2/phone_book) |
-| [2.18 -- 2.20](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-18-2-20) | [Countries](/part2/countries)
+| <ul><li>[2.18 -- 2.20](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-18-2-20)</li></ul> | [Countries](/part2/countries)
 
 ### Part 3
 
@@ -38,11 +38,11 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 
 | Problem Statements | Solutions |
 |-|-|
-| [4.1 -- 4.2](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-1-4-2) and [4.3 -- 4.7](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-3-4-7) | [Blog List](part4/blog_list/) |
+| <ul><li>[4.1 -- 4.2](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-1-4-2) </li> <li> [4.3 -- 4.7](https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing#exercises-4-3-4-7) </li></ul>| [Blog List](part4/blog_list/) |
 | [4.8 -- 4.12](https://fullstackopen.com/en/part4/testing_the_backend#exercises-4-8-4-12), [4.13 -- 4.14](https://fullstackopen.com/en/part4/testing_the_backend#exercises-4-13-4-14), [4.15 -- 4.22](https://fullstackopen.com/en/part4/token_authentication#exercises-4-15-4-23) | [Blog List TS](part4/blog_list_ts)
 
 ## Part 5
 
 | Problem Statements | Solutions |
 |-|-|
-|[5.1 -- 5.4](https://fullstackopen.com/en/part5/login_in_frontend#exercises-5-1-5-4)| [Solution to 5.1](part5/bloglist_frontend)|
+|<ul> <li> [5.1 -- 5.4](https://fullstackopen.com/en/part5/login_in_frontend#exercises-5-1-5-4) </li><li> [5.5 -- 5.11](https://fullstackopen.com/en/part5/props_children_and_proptypes#exercises-5-5-5-11) </li></ul> | [Blog List Front End](part5/bloglist_frontend)|
