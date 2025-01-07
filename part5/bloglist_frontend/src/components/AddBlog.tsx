@@ -44,6 +44,7 @@ const AddBlog = (props: IPropsAddBlog) => {
 
   const addBlog = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    props.updateUI()
     // console.log('button clicked', event.target)
     createBlog()
     // const foundBlog = props.blogs.find((item) => item.name == newPerson.name)

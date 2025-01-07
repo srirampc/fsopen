@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch } from "react"
+import { SetStateAction, Dispatch, ReactNode } from "react"
 
 export interface IBlog {
   title: string
@@ -43,4 +43,15 @@ export interface IPropsAddBlog {
     blogs: IBlog[],
     setBlogs: Dispatch<SetStateAction<IBlog[]>>
     setNotifyMessage: Dispatch<IMessage>
+    updateUI: () => void
 }
+
+export interface IPropsTogglable {
+  buttonLabel: string
+  children?: ReactNode
+}
+
+export interface IHandleTogglable {
+  toggleVisibility: () => void
+}
+
