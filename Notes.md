@@ -232,7 +232,7 @@ fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.
 - Types notes in [cheat sheet](https://react-typescript-cheatsheet.netlify.app/)
 
 
-## Testing
+## Frontend Testing
 
 Libraries for installing:
 
@@ -242,4 +242,14 @@ npm install --save-dev @testing-library/react @testing-library/jest-dom
 npm install --save-dev eslint-plugin-vitest-globals
 npm install --save-dev @testing-library/user-event
 npm install --save-dev @vitest/coverage-v8
+```
+
+## E2E Testing
+
+
+Commands
+```sh
+npm init playwright@latest
+sudo npx playwright install-deps
+sudo apt-get install libnss3 libnspr4 libasound2t64
 ```
