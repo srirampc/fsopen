@@ -43,6 +43,4 @@ const deleteBlog = (delObject: IBlog) => {
   return request.then((response) => response.data)
 }
 
-
-
 export default { getAll, create, update, deleteBlog, setToken }

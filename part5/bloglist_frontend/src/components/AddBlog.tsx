@@ -57,20 +57,20 @@ const AddBlog = (props: IPropsAddBlog) => {
   const formChanged = (event: ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.id)
     switch (event.target.id) {
-    case 'title':
-      setNewBlog({ ...newBlog, title: event.target.value })
-      break
-    case 'author':
-      setNewBlog({ ...newBlog, author: event.target.value })
-      break
-    case 'url':
-      setNewBlog({ ...newBlog, url: event.target.value })
-      break
-    case 'likes':
-      setNewBlog({ ...newBlog, likes: Number(event.target.value) })
-      break
-    default:
-      break
+      case 'title':
+        setNewBlog({ ...newBlog, title: event.target.value })
+        break
+      case 'author':
+        setNewBlog({ ...newBlog, author: event.target.value })
+        break
+      case 'url':
+        setNewBlog({ ...newBlog, url: event.target.value })
+        break
+      case 'likes':
+        setNewBlog({ ...newBlog, likes: Number(event.target.value) })
+        break
+      default:
+        break
     }
   }
 
@@ -79,19 +79,39 @@ const AddBlog = (props: IPropsAddBlog) => {
       <form onSubmit={addBlog}>
         <div>
           title:
-          <input id="title" value={newBlog.title} onChange={formChanged} />
+          <input
+            id="title"
+            value={newBlog.title}
+            onChange={formChanged}
+            placeholder="title-text"
+          />
         </div>
         <div>
           author:
-          <input id="author" value={newBlog.author} onChange={formChanged} />
+          <input
+            id="author"
+            value={newBlog.author}
+            onChange={formChanged}
+            placeholder="author-text"
+          />
         </div>
         <div>
           url:
-          <input id="url" value={newBlog.url} onChange={formChanged} />
+          <input
+            id="url"
+            value={newBlog.url}
+            onChange={formChanged}
+            placeholder="url-text"
+          />
         </div>
         <div>
           likes:
-          <input id="likes" value={newBlog.likes} onChange={formChanged} />
+          <input
+            id="likes"
+            value={newBlog.likes}
+            onChange={formChanged}
+            placeholder="likes-text"
+          />
         </div>
         <div>
           <button type="submit">create</button>

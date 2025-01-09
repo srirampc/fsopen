@@ -31,26 +31,28 @@ const Blog = (props: IPropsBlog) => {
   const blogDetail = () => {
     return (
       <>
-        <div>
-          {props.blog.url}
-          <br />
-          likes : {props.blog.likes}
-          <button onClick={addLikes}> like </button>
-          <br />
-          Added by: {props.blog.user?.name}
-          {props.blog.user?.username === props.user?.username ? (
-            <button onClick={removeBlog}>delete</button>
-          ) : (
-            <></>
-          )}
+        <div className="blog-detail">
+          <div className="blog-url">{props.blog.url}</div>
+          <div className="blog-likes">
+            likes : {props.blog.likes}
+            <button onClick={addLikes}>like</button>
+          </div>
+          <div className="blog-user">
+            Added by: {props.blog.user?.name}
+            {props.blog.user?.username === props.user?.username ? (
+              <button onClick={removeBlog}>delete</button>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </>
     )
   }
 
   return (
-    <div style={blogStyle}>
-      <div>
+    <div style={blogStyle} className="blog">
+      <div className="blog-title-author">
         {props.blog.title} {props.blog.author}
       </div>
       {!showDetail && <button onClick={toggleShow}>show</button>}

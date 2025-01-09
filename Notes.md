@@ -20,6 +20,16 @@ Notes from the egghead.io course [React Beginners Guide](https://egghead.io/cour
     - DO NOT nest component function definitions. When nested, a different 
       child component will be created every render of the parent component, thus
       resetting the child's state. 
+- Ref is sort of a pointer to a object can be anything
+- Ref is used as a pointer to the DOM element .
+- Also the following from [here](https://react.dev/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback)
+> Hooks must only be called at the top-level of your component. You can’t call useRef in a loop, in a condition, or inside a map() call.
+
+Solution when we have multiple components as ref is to use a ref callback
+
+- Use of imperative handle to [expose the API of a component](https://react.dev/learn/manipulating-the-dom-with-refs#exposing-a-subset-of-the-api-with-an-imperative-handle)
+- Effects:
+> Effects let you specify side effects that are caused by rendering itself, rather than by a particular event.
 
 ## Linting 
 
@@ -215,4 +225,21 @@ fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.
     "build": "tsc",
     "dev": "NODE_ENV=development nodemon index.ts",
     "test": "npm run build && NODE_ENV=test node --test",
+```
+
+### Typescript with react
+
+- Types notes in [cheat sheet](https://react-typescript-cheatsheet.netlify.app/)
+
+
+## Testing
+
+Libraries for installing:
+
+```sh
+npm install --save-dev vitest jsdom
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+npm install --save-dev eslint-plugin-vitest-globals
+npm install --save-dev @testing-library/user-event
+npm install --save-dev @vitest/coverage-v8
 ```
