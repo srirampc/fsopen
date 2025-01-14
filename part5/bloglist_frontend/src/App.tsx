@@ -72,7 +72,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h1>blogs</h1>
       <Notification
         message={notifyMessage.message}
         className={notifyMessage.className}

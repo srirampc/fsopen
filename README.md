@@ -45,7 +45,7 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 
 | Problem Statements | Solutions |
 |-|-|
-|<ul> <li> [5.1 -- 5.4](https://fullstackopen.com/en/part5/login_in_frontend#exercises-5-1-5-4) </li><li> [5.5 -- 5.11](https://fullstackopen.com/en/part5/props_children_and_proptypes#exercises-5-5-5-11) </li> <li>   [5.12](https://fullstackopen.com/en/part5/props_children_and_proptypes#exercise-5-12) </li> <li>[5.13 --  5.15](https://fullstackopen.com/en/part5/testing_react_apps#exercises-5-13-5-16)*</li></ul> | [Blog List Front End](part5/bloglist_frontend) |
+|<ul> <li> [5.1 -- 5.4](https://fullstackopen.com/en/part5/login_in_frontend#exercises-5-1-5-4) </li><li> [5.5 -- 5.11](https://fullstackopen.com/en/part5/props_children_and_proptypes#exercises-5-5-5-11) </li> <li>   [5.12](https://fullstackopen.com/en/part5/props_children_and_proptypes#exercise-5-12) </li> <li>[5.13 --  5.15](https://fullstackopen.com/en/part5/testing_react_apps#exercises-5-13-5-16)*</li> <li> [5.17 -- 5.23](https://fullstackopen.com/en/part5/end_to_end_testing_playwright#exercises-5-17-5-23) </li></ul> | [Blog List Front End](part5/bloglist_frontend) |
 
 *5.16 was not completed because of the way I structured my AddBlog component.
 

@@ -32,3 +32,12 @@ h1 {
     padding: 5px;
     margin-left: 100px;
 }
+
+footer {
+  margin-top: 10px;
+  padding: 10px;
+  color: green;
+  font-style: italic;
+}
+
+
