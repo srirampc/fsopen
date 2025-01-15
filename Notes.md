@@ -246,10 +246,60 @@ npm install --save-dev @vitest/coverage-v8
 
 ## E2E Testing
 
-
-Commands
+1. Init Commands
 ```sh
 npm init playwright@latest
 sudo npx playwright install-deps
 sudo apt-get install libnss3 libnspr4 libasound2t64
 ```
+2. After the init command, playwright will notify the missing system dependencies
+for some of the browsers. In this case, either install the dependencies or
+remove the offending browser from the list in playwright.config.json.
+3. Add scripts in package.json for e2e testing
+```json
+{
+  // ...
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  // ...
+}
+```
+4. Update backend package.json
+
+```json
+{
+    // ...
+    "scripts" : {
+        // ...
+        "start:test": "NODE_ENV=test ts-node index.ts",
+        // ...
+    } 
+    // ...
+}
+```
+5. Start server and frontend. Write tests. Run 
+```sh
+npm test -- --project chromium
+```
+6. Config playwright to make run sequential
+```js
+{
+  fullyParallel: false,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  // workers: process.env.CI ? 1 : undefined,
+  workers: 1,
+
+
+}
+```
+7. Open playwright in UI mode
+```sh
+npm test -- --ui
+```
+8. Use data-testid to indicate the form elements
