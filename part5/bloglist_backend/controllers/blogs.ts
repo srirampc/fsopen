@@ -15,7 +15,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request: express.Request, response) => {
   const body: IBlog = request.body
   const req = request as BlogRequest
-  // console.log('Token at post', req.user)
+  console.log('Token at post', req.user)
   if (!req.user) {
     response.status(401).json({ error: 'token invalid' })
   } else {
@@ -29,10 +29,14 @@ blogsRouter.post('/', async (request: express.Request, response) => {
         user: user.id,
       })
       const savedBlog = await blog.save()
-      // console.log("Saved Blog", savedBlog)
+      console.log("Saved Blog", savedBlog)
       user.blogs = user.blogs.concat(savedBlog._id)
       await user.save()
-      response.status(201).json(savedBlog)
+      const returnBlog = await savedBlog.populate('user', {
+        username: 1,
+        name: 1,
+      })
+      response.status(201).json(returnBlog)
     } else {
       response.status(400).json({ error: 'user token invalid' })
     }
@@ -67,7 +71,7 @@ blogsRouter.put(
         request.params.id,
         { title, author, url, likes },
         { new: true, runValidators: true, context: 'query' },
-      ).populate('user', {username: 1, name: 1})
+      ).populate('user', { username: 1, name: 1 })
       if (updatedNote) {
         response.json(updatedNote)
       } else {
@@ -77,7 +81,7 @@ blogsRouter.put(
 
     // else if (req.user != updBlog.user.toString()) {
     //   response.status(401).json({ error: 'token invalid' })
-    // } 
+    // }
   },
 )
 

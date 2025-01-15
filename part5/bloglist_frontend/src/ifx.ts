@@ -53,6 +53,7 @@ export interface IPropsLogout {
 
 export interface IPropsAddBlog {
   blogs: IBlog[]
+  user: IUser | null
   setBlogs: Dispatch<SetStateAction<IBlog[]>>
   setNotifyMessage: Dispatch<IMessage>
   updateUI: () => void

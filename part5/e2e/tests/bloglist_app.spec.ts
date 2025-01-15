@@ -53,7 +53,7 @@ pwr.describe('test notes app', () => {
       await expect(page.getByText('my blog Sofia V')).toBeVisible()
     })
 
-    pwr.describe('and like a note exists', () => {
+    pwr.describe('and like/delete a note exists', () => {
       pwr.beforeEach(async ({ page }) => {
         await createBlog(
           page,
@@ -71,10 +71,16 @@ pwr.describe('test notes app', () => {
           nextElement.getByText('example.com/my-blog-part-2'),
         ).toBeVisible()
         await nextElement.getByRole('button', { name: 'like' }).click()
-        await expect(
-          nextElement.getByText('likes : 6'),
-        ).toBeVisible()
-
+        await expect(nextElement.getByText('likes : 6')).toBeVisible()
+      })
+      test('blog can be deleted', async ({ page }) => {
+        page.on('dialog', (dialog) => dialog.accept())
+        const blogElement = await page.getByText('my blog part 2 Sofia V')
+        const nextElement = await blogElement.locator('..')
+        await nextElement.getByRole('button', { name: 'show' }).click()
+        await expect(nextElement.getByText('Added by: ')).toBeVisible()
+        await page.getByRole('button', { name: 'delete' }).click()
+        await expect(page.getByText('my blog part 2 Sofia V')).not.toBeVisible()
       })
     })
   })

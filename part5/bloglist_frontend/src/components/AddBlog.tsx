@@ -24,6 +24,7 @@ const AddBlog = (props: IPropsAddBlog) => {
       .then((addedBlog) => {
         setNewBlog(emptyBlog)
         const rxBlog = addedBlog as IBlog
+        console.log(rxBlog)
         const nMsg = `The blog ${rxBlog.title} was sucessfully added to the server`
         props.setBlogs(props.blogs.concat(rxBlog))
         props.setNotifyMessage({ message: nMsg, className: 'notify' })

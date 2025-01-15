@@ -45,6 +45,7 @@ const App = () => {
         <Togglable buttonLabel="add blog" ref={addBlogRef}>
           <AddBlog
             blogs={blogs}
+            user={user}
             setBlogs={setBlogs}
             setNotifyMessage={setNotifyMessage}
             updateUI={updateUI}
