@@ -57,20 +57,20 @@ const AddBlog = (props: IPropsAddBlog) => {
   const formChanged = (event: ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.id)
     switch (event.target.id) {
-      case 'title':
-        setNewBlog({ ...newBlog, title: event.target.value })
-        break
-      case 'author':
-        setNewBlog({ ...newBlog, author: event.target.value })
-        break
-      case 'url':
-        setNewBlog({ ...newBlog, url: event.target.value })
-        break
-      case 'likes':
-        setNewBlog({ ...newBlog, likes: Number(event.target.value) })
-        break
-      default:
-        break
+    case 'title':
+      setNewBlog({ ...newBlog, title: event.target.value })
+      break
+    case 'author':
+      setNewBlog({ ...newBlog, author: event.target.value })
+      break
+    case 'url':
+      setNewBlog({ ...newBlog, url: event.target.value })
+      break
+    case 'likes':
+      setNewBlog({ ...newBlog, likes: Number(event.target.value) })
+      break
+    default:
+      break
     }
   }
 
