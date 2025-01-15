@@ -12,7 +12,13 @@ pwr.describe('test notes app', () => {
         password: 'root',
       },
     })
-
+    await request.post('/api/users', {
+      data: {
+        name: 'Jenifer Garner',
+        username: 'jenig',
+        password: 'root',
+      },
+    })
     await page.goto('/')
   })
 
@@ -73,6 +79,7 @@ pwr.describe('test notes app', () => {
         await nextElement.getByRole('button', { name: 'like' }).click()
         await expect(nextElement.getByText('likes : 6')).toBeVisible()
       })
+
       test('blog can be deleted', async ({ page }) => {
         page.on('dialog', (dialog) => dialog.accept())
         const blogElement = await page.getByText('my blog part 2 Sofia V')
@@ -81,6 +88,18 @@ pwr.describe('test notes app', () => {
         await expect(nextElement.getByText('Added by: ')).toBeVisible()
         await page.getByRole('button', { name: 'delete' }).click()
         await expect(page.getByText('my blog part 2 Sofia V')).not.toBeVisible()
+      })
+
+      test('only loggedin user can delete', async ({ page }) => {
+        await page.getByRole('button', { name: 'logout' }).click()
+        await expect(page.getByRole('button', { name: 'login' })).toBeVisible()
+        await loginWith(page, 'jenig', 'root')
+        const blogElement = await page.getByText('my blog part 2 Sofia V')
+        const nextElement = await blogElement.locator('..')
+        await nextElement.getByRole('button', { name: 'show' }).click()
+        await expect(
+          page.getByRole('button', { name: 'delete' }),
+        ).not.toBeVisible()
       })
     })
   })
