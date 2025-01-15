@@ -1,9 +1,9 @@
 # Full Stack Open Course
 
 This repository contains the solutions for the exercises for the course:
-[Full Stak Open](https://fullstackopen.com/en/)
+[Full Stak Open](https://fullstackopen.com/en/).
 Exercise problem statements and the link to solutions in the repository are
-given below
+given below.
 
 ## Part 0
 
