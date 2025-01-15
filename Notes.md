@@ -59,7 +59,7 @@ npm install --save-dev @stylistic/eslint-plugin-js
   // ...
 }
 ```
-3. Update eslint.config.mjs as required. 
+6. Update eslint.config.mjs as required. 
  - Ignore dist in eslint.config.mjs
  - Equality checking only with ==== and other useful rules for eslint.config.js
 ```javascript
@@ -92,6 +92,18 @@ export default [
     ignores: ['dist/**'],
   },
 ]
+```
+7. eslint default for switch-case is not good add the following above switch-case
+```javascript
+    /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
+    switch (event.target.id) {
+      case 'title':
+        setNewBlog({ ...newBlog, title: event.target.value })
+        break
+       // ...
+      default:
+        break
+    }
 ```
 
 ##  Development -> Deployment
@@ -302,4 +314,16 @@ npm test -- --project chromium
 ```sh
 npm test -- --ui
 ```
-8. Use data-testid to indicate the form elements
+8. Use data-testid to indicate the form elements to select by getByTestId
+9. Debug a test
+```sh
+npm test -- -g'importance can be changed' --debug
+```
+10. Use of trace viewer
+```sh
+npm run test -- --trace on
+```
+11. playwright test generator by recording tests
+```sh
+npx playwright codegen http://localhost:5173/
+```

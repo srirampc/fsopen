@@ -102,5 +102,57 @@ pwr.describe('test notes app', () => {
         ).not.toBeVisible()
       })
     })
+
+    pwr.describe('display by order of likes', () => {
+      pwr.beforeEach(async ({ page }) => {
+        await createBlog(
+          page,
+          'our future',
+          'Bill G',
+          'example.com/our-future',
+          '5',
+        )
+        await createBlog(
+          page,
+          'next year',
+          'Bob M',
+          'example.com/next-year',
+          '15',
+        )
+        await createBlog(
+          page,
+          'final goodbye',
+          'Paul A',
+          'example.com/final-good-bye',
+          '9',
+        )
+      })
+
+      test('display sorted when added', async ({ page }) => {
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[1]'),
+        ).toContainText('next year Bob M')
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[2]'),
+        ).toContainText('final goodbye Paul A')
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[3]'),
+        ).toContainText('our future Bill G')
+      })
+
+      test('display sorted after login', async ({ page }) => {
+        await page.getByRole('button', { name: 'logout' }).click()
+        await loginWith(page, 'jenig', 'root')
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[1]'),
+        ).toContainText('next year Bob M')
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[2]'),
+        ).toContainText('final goodbye Paul A')
+        await expect(
+          page.locator('//*[@id="blog-list-root"]/div[3]'),
+        ).toContainText('our future Bill G')
+      })
+    })
   })
 })
