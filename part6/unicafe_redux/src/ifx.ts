@@ -1,4 +1,6 @@
-export enum EActionType {
+import { Store } from 'redux'
+
+export enum EFeedback {
   GOOD = 'GOOD',
   OK = 'OK',
   BAD = 'BAD',
@@ -7,5 +9,15 @@ export enum EActionType {
 }
 
 export interface ICounterAction {
-  type: EActionType
+  type: EFeedback
+}
+
+export interface IAppState {
+  good: number
+  ok: number
+  bad: number
+}
+
+export interface IAppProps {
+  store: Store<IAppState, ICounterAction>
 }

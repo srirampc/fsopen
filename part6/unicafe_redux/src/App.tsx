@@ -1,13 +1,10 @@
 import './App.css'
-import { createStore } from 'redux'
-import reducer from './reducer'
-import { EActionType } from './ifx'
+import { EFeedback, IAppProps } from './ifx'
 
-const store = createStore(reducer)
-const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: EActionType.GOOD,
+const App = (props: IAppProps) => {
+  const addFeeback = (feedback: EFeedback) => {
+    props.store.dispatch({
+      type: feedback,
     })
   }
 
@@ -15,16 +12,16 @@ const App = () => {
     <>
       <h1>Unicafe Redux</h1>
       <div className="card">
-        <button onClick={good}>good</button>
-        <button>ok</button>
-        <button>bad</button>
-        <button>reset stats</button>
-        <div>good {store.getState().good}</div>
-        <div>ok</div>
-        <div>bad</div>
+        <button onClick={() => addFeeback(EFeedback.GOOD)}>good</button>
+        <button onClick={() => addFeeback(EFeedback.OK)}>ok</button>
+        <button onClick={() => addFeeback(EFeedback.BAD)}>bad</button>
+        <button onClick={() => addFeeback(EFeedback.ZERO)}>reset stats</button>
+        <div>good {props.store.getState().good}</div>
+        <div>ok {props.store.getState().ok}</div>
+        <div>bad {props.store.getState().bad}</div>
       </div>
     </>
   )
 }
 
-export default { App, store }
+export default App

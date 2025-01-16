@@ -1,18 +1,23 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import app from './App.tsx'
+import App from './App.tsx'
+import reducer from './reducer'
+import { createStore } from 'redux'
+
+
+const store = createStore(reducer)
 
 const root = createRoot(document.getElementById('root')!)
 
 const renderApp = () => {
   root.render(
     <StrictMode>
-      <app.App />
+      <App store={store}/>
     </StrictMode>,
   )
 }
 
 
 renderApp()
-app.store.subscribe(renderApp)
+store.subscribe(renderApp)
