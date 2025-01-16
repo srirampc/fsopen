@@ -327,3 +327,53 @@ npm run test -- --trace on
 ```sh
 npx playwright codegen http://localhost:5173/
 ```
+
+## Typescript + ts-jest setting up
+Reference [here](https://jestjs.io/docs/getting-started#using-typescript) and
+[here](https://kulshekhar.github.io/ts-jest/docs/getting-started/installation/#jest-config-file)
+1. creating the app
+```sh
+npm create vite@latest notes_redux -- --template react-ts
+```
+2. Update tsconfig.json. Copy from tsconfig.app.json to tsconfig.json
+```json
+{
+  "compilerOptions": {
+     // ...   
+     "esModuleInterop": true,
+  }
+}
+```
+3. Jest packages
+```sh
+npm install --save-dev jest
+npm install --save-dev ts-jest @types/jest eslint-plugin-jest
+```
+4. Generate a ts-jest config and set appropriate values
+```sh
+npm init jest@latest
+```
+5. Add the following in jest.config.ts
+```json
+{
+  testEnvironment: 'node',
+  transform: {
+    '^.+.tsx?$': ['ts-jest', {}],
+  },
+}
+```
+6. install ts-node
+```sh
+npm install --save-dev ts-node
+```
+7. Other dependencies
+```sh
+npm install --save-dev deep-freeze @types/deep-freeze
+```
+8. jest/globals? in eslint.config.js I am not sure about this
+```js
+languageOptions: {
+  // ...
+  globals: { browser: true, 'jest/globals': true },
+}
+```
