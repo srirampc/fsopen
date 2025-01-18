@@ -25,6 +25,8 @@ const reducer = (state = initialState, action: IAnecdoteAction) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
+    case EActionType.CREATE:
+        return state.concat(action.payload as IAnecdote)
     case EActionType.VOTE: {
       const fid = action.payload.id
       const foundNote = state.find((anx) => anx.id === fid)
@@ -36,12 +38,18 @@ const reducer = (state = initialState, action: IAnecdoteAction) => {
         return state
       }
     }
-
     default:
       break
   }
 
   return state
+}
+
+export const createAnecdote = (content: string) : IAnecdoteAction => {
+   return {
+        type: EActionType.CREATE, 
+        payload: asObject(content) 
+    }
 }
 
 export const voteAnecdote = (id: string): IAnecdoteAction => {
