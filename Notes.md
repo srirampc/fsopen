@@ -242,6 +242,9 @@ fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.
 ### Typescript with react
 
 - Types notes in [cheat sheet](https://react-typescript-cheatsheet.netlify.app/)
+- React.FunctionComponent for function components or React.FC<AppProps>
+- Table for typing different form events is [here](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events)
+- Futher reading on conditional types: [ts spec](https://github.com/swyxio/ts-spec/blob/master/conditional-types.md)
 
 
 ## Frontend Testing

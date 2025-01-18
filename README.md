@@ -53,5 +53,5 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 
 | Problem Statements | Solutions |
 |-|-|
-|<ul><li>[6.1 -- 6.2](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-1-6-2)</li></ul> | [Unicafe Redux](/part6/unicafe_redux) |
-
+|<ul><li>[6.1 -- 6.2](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-1-6-2)</li></ul> | [Unicafe Redux](part6/unicafe_redux) |
+|<ul><li> [6.3 -- 6.8](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-3-6-8) </li></ul> | [Anecdotes Redux](part6/anecdotes_redux) |
