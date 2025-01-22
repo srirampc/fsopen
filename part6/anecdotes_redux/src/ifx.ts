@@ -5,15 +5,30 @@ export interface IAnecdote {
 }
 
 export interface IUpdateAction {
-    id: string
+  id: string
 }
 
 export enum EActionType {
-    CREATE = "CREATE",
-    VOTE = "VOTE"
+  CREATE = 'CREATE',
+  VOTE = 'VOTE',
 }
 
 export interface IAnecdoteAction {
-    type: string,
-    payload: IAnecdote | IUpdateAction
+  type: EActionType
+  payload: IAnecdote | IUpdateAction
+}
+
+export enum EFilterAction {
+  SET_FILTER = 'SET_FILTER',
+  RESET_FILTER = 'RESET_FILTER',
+}
+
+export interface IFilterAction {
+  type: EFilterAction
+  payload: string
+}
+
+export interface AppSate {
+    anecdotes: IAnecdote[]
+    filter: string
 }

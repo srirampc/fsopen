@@ -3,10 +3,16 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import './index.css'
 import App from './App'
-import reducer from './reducers/anecdoteReducer'
-import { IAnecdote, IAnecdoteAction } from './ifx'
+import anecdoteReducer from './reducers/anecdoteReducer'
+import filterReducer from './reducers/filterReducer'
+import { combineReducers } from 'redux'
 
-const store = createStore<IAnecdote[], IAnecdoteAction>(reducer)
+const reducer = combineReducers({
+    anecdotes: anecdoteReducer,
+    filter: filterReducer
+})
+
+const store = createStore(reducer)
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
