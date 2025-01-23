@@ -1,9 +1,9 @@
-import { useDispatch } from 'react-redux'
 import { SyntheticEvent } from 'react'
 import { setFilter } from '../reducers/filterReducer'
+import { useAppDispatch } from '../hooks'
 
 const FilterForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const updateFilter = (e: SyntheticEvent) => {
     e.preventDefault()

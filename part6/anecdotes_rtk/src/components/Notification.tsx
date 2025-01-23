@@ -1,16 +1,14 @@
-import { useSelector } from 'react-redux'
-import { AppState } from '../ifx'
+import { useAppSelector } from '../hooks'
 
 const Notification = () => {
-  const notification = useSelector<AppState, string>(
-    (state) => state.notification,
-  )
+  const notification = useAppSelector((state) => state.notification)
   const style = {
     border: 'solid',
     padding: 10,
     borderWidth: 1,
+    width: '580px',
   }
-  if (notification.length > 0) return <div style={style}>{notification}</div>
+  if (notification) return <div style={style}>{notification}</div>
 }
 
 export default Notification

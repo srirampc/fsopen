@@ -1,5 +1,7 @@
 import { IAnecdote } from '../ifx'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../store'
+import ancedoteService from '../services/anecdotes'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -28,15 +30,12 @@ const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: emptyState,
   reducers: {
-    createAnecdote(state: IAnecdote[], action: PayloadAction<IAnecdote>) {
-      state.push(action.payload)
-    },
-    voteAnecdote(state: IAnecdote[], action: PayloadAction<string>) {
-      const fid = action.payload
+    updateAnecdotes(state: IAnecdote[], action: PayloadAction<IAnecdote>) {
+      const fid = action.payload.id
       const foundNote = state.find((anx) => anx.id === fid)
       if (foundNote) {
         return state.map((anx) =>
-          anx.id !== fid ? anx : { ...anx, votes: anx.votes + 1 },
+          anx.id !== fid ? anx : { ...action.payload },
         )
       } else {
         return state
@@ -45,8 +44,37 @@ const anecdoteSlice = createSlice({
     setAnecdotes(_st: IAnecdote[], action: PayloadAction<IAnecdote[]>) {
       return action.payload
     },
+    appendAnecdote(state: IAnecdote[], action: PayloadAction<IAnecdote>) {
+      state.push(action.payload)
+    },
   },
 })
 
-export const { createAnecdote, voteAnecdote, setAnecdotes } = anecdoteSlice.actions
+export const { updateAnecdotes, setAnecdotes, appendAnecdote } =
+  anecdoteSlice.actions
+
+export const initializeAnecdotes = () => {
+  return async (dispatch: AppDispatch) => {
+    const anecdotes = await ancedoteService.getAll()
+    dispatch(setAnecdotes(anecdotes))
+  }
+}
+
+export const createAnecdote = (content: string) => {
+  return async (dispatch: AppDispatch) => {
+    const newAnecdote = await ancedoteService.createNew(content)
+    dispatch(appendAnecdote(newAnecdote))
+  }
+}
+
+export const voteAnecdote = (anecdote: IAnecdote) => {
+  return async (dispatch: AppDispatch) => {
+    const updAnecdote = await ancedoteService.update(anecdote.id, {
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    })
+    dispatch(updateAnecdotes(updAnecdote))
+  }
+}
+
 export default anecdoteSlice.reducer

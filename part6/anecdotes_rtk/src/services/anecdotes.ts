@@ -1,4 +1,5 @@
 import axios from "axios"
+import { IAnecdote } from "../ifx"
 
 const baseUrl = 'http://localhost:3001/anecdotes'
 
@@ -13,7 +14,13 @@ const createNew = async (content: string) => {
   return response.data
 }
 
+const update = async (id: string, newObject: IAnecdote) => {
+    const response = await axios.put(`${baseUrl}/${id}`, newObject)
+    return response.data
+}
+
 export default {
   getAll,
   createNew,
+  update,
 }

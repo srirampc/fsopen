@@ -4,8 +4,3 @@ export interface IAnecdote {
   votes: number
 }
 
-export interface AppState {
-    anecdotes: IAnecdote[]
-    filter: string
-    notification: string
-}
