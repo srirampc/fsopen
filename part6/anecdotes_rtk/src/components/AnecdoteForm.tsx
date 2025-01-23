@@ -1,18 +1,20 @@
 import { useDispatch } from 'react-redux'
 import { SyntheticEvent } from 'react'
 import { createAnecdote } from '../reducers/anecdoteReducer'
+import ancedoteService from '../services/anecdotes'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
-  const addAnecdote = (e: SyntheticEvent) => {
+  const addAnecdote = async (e: SyntheticEvent) => {
     e.preventDefault()
     const target = e.target as typeof e.target & {
       anecdote: { value: string }
     }
     const content = target.anecdote.value
     target.anecdote.value = ''
-    dispatch(createAnecdote(content))
+    const newAnecdote = await ancedoteService.createNew(content)
+    dispatch(createAnecdote(newAnecdote))
   }
 
   return (

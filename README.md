@@ -53,6 +53,6 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 
 | Problem Statements | Solutions |
 |-|-|
-|<ul><li>[6.1 -- 6.2](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-1-6-2)</li></ul> | [Unicafe Redux](part6/unicafe_redux) |
-|<ul><li> [6.3 -- 6.8](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-3-6-8) </li><li>[6.9](https://fullstackopen.com/en/part6/many_reducers#exercise-6-9)</li></ul> | [Anecdotes Redux](part6/anecdotes_redux) |
-|<ul><li>[6.10 -- 6.13](https://fullstackopen.com/en/part6/many_reducers#exercises-6-10-6-13)</li></ul>|[Anecdotes Redux Toolkit](part6/anecdotes_rtk)|
+|<ul><li>[6.1 -- 6.2](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-1-6-2)</li></ul> | [Unicafe w. Redux](part6/unicafe_redux) |
+|<ul><li> [6.3 -- 6.8](https://fullstackopen.com/en/part6/flux_architecture_and_redux#exercises-6-3-6-8) </li><li>[6.9](https://fullstackopen.com/en/part6/many_reducers#exercise-6-9)</li></ul> | [Anecdotes w. Redux](part6/anecdotes_redux) |
+|<ul><li>[6.10 -- 6.13](https://fullstackopen.com/en/part6/many_reducers#exercises-6-10-6-13)</li> <li>[6.14 -- 6.15](https://fullstackopen.com/en/part6/communicating_with_server_in_a_redux_application#exercises-6-14-6-15)</li></ul>|[Anecdotes w. Redux Toolkit](part6/anecdotes_rtk)|

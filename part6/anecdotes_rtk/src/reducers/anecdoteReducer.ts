@@ -1,4 +1,4 @@
-import { IAnecdote  } from '../ifx'
+import { IAnecdote } from '../ifx'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const anecdotesAtStart = [
@@ -20,16 +20,16 @@ const asObject = (anecdote: string): IAnecdote => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+export const sampleInitState = anecdotesAtStart.map(asObject)
 
+const emptyState: IAnecdote[] = []
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
-  initialState,
+  initialState: emptyState,
   reducers: {
-    createAnecdote(state: IAnecdote[], action: PayloadAction<string>) {
-      const atext = action.payload
-      state.push(asObject(atext))
+    createAnecdote(state: IAnecdote[], action: PayloadAction<IAnecdote>) {
+      state.push(action.payload)
     },
     voteAnecdote(state: IAnecdote[], action: PayloadAction<string>) {
       const fid = action.payload
@@ -42,8 +42,11 @@ const anecdoteSlice = createSlice({
         return state
       }
     },
+    setAnecdotes(_st: IAnecdote[], action: PayloadAction<IAnecdote[]>) {
+      return action.payload
+    },
   },
 })
 
-export const {createAnecdote, voteAnecdote} = anecdoteSlice.actions
+export const { createAnecdote, voteAnecdote, setAnecdotes } = anecdoteSlice.actions
 export default anecdoteSlice.reducer
