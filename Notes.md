@@ -245,7 +245,11 @@ fly secrets set MONGODB_URI="mongodb+srv://fullstack:thepasswordishere@cluster0.
 - React.FunctionComponent for function components or React.FC<AppProps>
 - Table for typing different form events is [here](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events)
 - Futher reading on conditional types: [ts spec](https://github.com/swyxio/ts-spec/blob/master/conditional-types.md)
+- React Context with useReducer and Action types [blog post](https://dev.to/elisealcala/react-context-with-usereducer-and-typescript-4obm)
 
+### Typescript Error
+
+1. Using ts-node and tsx : [Fixing unknown file extension error](https://www.youtube.com/watch?v=jn370WEIvjs)
 
 ## Frontend Testing
 

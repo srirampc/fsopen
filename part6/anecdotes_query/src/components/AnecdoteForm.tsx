@@ -3,14 +3,38 @@ import { SyntheticEvent } from 'react'
 import { createAnecdote } from '../requests'
 import { IAnecdote } from '../ifx'
 
+import { useNotificationDispatch } from '../contexts/NotificationContext'
+import { AxiosError } from 'axios'
+
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
     onSuccess: (newAnecdote) => {
       // queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
-      const notes: IAnecdote[] | undefined = queryClient.getQueryData(['anecdotes'])
-      if (notes) queryClient.setQueryData(['anecdotes'], notes.concat(newAnecdote))
+      const notes: IAnecdote[] | undefined = queryClient.getQueryData([
+        'anecdotes',
+      ])
+      if (notes) {
+        queryClient.setQueryData(['anecdotes'], notes.concat(newAnecdote))
+      }
+      dispatch({
+        type: 'SET',
+        payload: `Added the anecdote '${newAnecdote.content}'`,
+      })
+      setTimeout(() => dispatch({ type: 'RESET' }), 5000)
+    },
+    onError: (error) => {
+      const aerr = error as AxiosError
+      console.log('Obtained Error :', aerr)
+      const errData = aerr.response?.data as {error: string}
+      const message = errData ? errData.error : aerr
+      dispatch({
+        type: 'SET',
+        payload: `Failed with error: '${message}'`,
+      })
+      setTimeout(() => dispatch({ type: 'RESET' }), 5000)
     },
   })
 

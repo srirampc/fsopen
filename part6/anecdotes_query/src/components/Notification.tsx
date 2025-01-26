@@ -1,5 +1,8 @@
-const Notification = ({notification}: {notification: string}) => {
+import { useNotificationValue } from '../contexts/NotificationContext'
+
+const Notification = () => {
   // const notification = useAppSelector((state) => state.notification)
+  const notification = useNotificationValue()
   const style = {
     border: 'solid',
     padding: 10,

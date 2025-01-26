@@ -4,6 +4,7 @@ import Notification from './components/Notification'
 import { IAnecdote } from './ifx'
 import { getAnecdotes, updateAnecdote } from './requests'
 import './App.css'
+import { useNotificationDispatch } from './contexts/NotificationContext'
 
 const App = () => {
   const queryClient = useQueryClient()
@@ -14,17 +15,24 @@ const App = () => {
       const anecdotes: IAnecdote[] | undefined = queryClient.getQueryData([
         'anecdotes',
       ])
-      if (anecdotes)
+      if (anecdotes) {
         queryClient.setQueryData(
           ['anecdotes'],
           anecdotes.map((itx) => (itx.id == updNote.id ? updNote : itx)),
         )
+      }
     },
   })
 
+  const dispatch = useNotificationDispatch()
   const handleVote = (anecdote: IAnecdote) => {
     console.log('vote', anecdote)
     updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+    dispatch({
+      type: 'SET',
+      payload: `Anecdote '${anecdote.content}' is voted`,
+    })
+    setTimeout(() => dispatch({ type: 'RESET' }), 5000)
   }
 
   const result = useQuery({
@@ -55,18 +63,20 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes + Query</h2>
-      <Notification notification="" />
+      <Notification />
       <AnecdoteForm />
       <div className="card">
-        {anecdotes.map((anecdote) => (
-          <div key={anecdote.id}>
-            <div>{anecdote.content}</div>
-            <div>
-              has {anecdote.votes}
-              <button onClick={() => handleVote(anecdote)}>vote</button>
+        {anecdotes
+          .sort((ax, ay) => ay.votes - ax.votes)
+          .map((anecdote) => (
+            <div key={anecdote.id}>
+              <div>{anecdote.content}</div>
+              <div>
+                has {anecdote.votes}
+                <button onClick={() => handleVote(anecdote)}>vote</button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <p className="read-the-docs"></p>
     </div>
