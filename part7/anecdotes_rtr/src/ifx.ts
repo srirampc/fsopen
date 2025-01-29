@@ -10,6 +10,10 @@ export interface IAListProps {
     anecdotes: IAnecdote[]
 }
 
+export interface IAnecdoteProps {
+    anecdote?: IAnecdote
+}
+
 export interface ICreateProps {
     addNew: (anew: IAnecdote) => void
 }

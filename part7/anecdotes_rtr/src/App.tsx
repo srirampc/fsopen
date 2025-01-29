@@ -1,6 +1,16 @@
 import { SyntheticEvent, useState } from 'react'
 import './App.css'
-import { IAListProps, IAnecdote, ICreateProps } from './ifx'
+import { IAListProps, IAnecdote, IAnecdoteProps, ICreateProps } from './ifx'
+import Footer from './components/Footer'
+import {
+  useNavigate,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useMatch,
+} from 'react-router-dom'
+import Anecdote from './components/Anecdote'
 
 const Menu = () => {
   const padding = {
@@ -8,25 +18,27 @@ const Menu = () => {
   }
   return (
     <div>
-      <a href="#" style={padding}>
+      <Link style={padding} to="/anecdotes">
         anecdotes
-      </a>
-      <a href="#" style={padding}>
+      </Link>
+      <Link style={padding} to="/create">
         create new
-      </a>
-      <a href="#" style={padding}>
+      </Link>
+      <Link style={padding} to="/about">
         about
-      </a>
+      </Link>
     </div>
   )
 }
 
 const AnecdoteList = ({ anecdotes }: IAListProps) => (
   <div>
-    <h2>Anecdotes</h2>
+    <h3>Anecdotes</h3>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -51,17 +63,6 @@ const About = () => (
       Software engineering is full of excellent anecdotes, at this app you can
       find the best and add more.
     </p>
-  </div>
-)
-
-const Footer = () => (
-  <div>
-    Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
-    See{' '}
-    <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js
-    </a>{' '}
-    for the source code.
   </div>
 )
 
@@ -114,6 +115,10 @@ const CreateNew = (props: ICreateProps) => {
   )
 }
 
+export const Home = ({ anecdotes }: IAListProps) => {
+  return <AnecdoteList anecdotes={anecdotes} />
+}
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState<IAnecdote[]>([
     {
@@ -132,7 +137,6 @@ const App = () => {
     },
   ])
 
-
   const [notification, setNotification] = useState<string>('')
 
   const addNew = (anecdote: IAnecdote) => {
@@ -141,6 +145,10 @@ const App = () => {
   }
 
   const anecdoteById = (id: number) => anecdotes.find((a) => a.id === id)
+
+  const match = useMatch('/anecdotes/:id')
+  console.log('match', match, Number(match?.params.id))
+  const anecdote = anecdoteById(Number(match?.params.id))
 
   const vote = (id: number) => {
     const anecdote = anecdoteById(id)
@@ -156,14 +164,27 @@ const App = () => {
 
   return (
     <div>
-      <h1>Anecdotes + React Router</h1>
+      <h2>Software Anecdotes</h2>
+      <Menu />
       <div className="card">
-        <Menu />
-        <AnecdoteList anecdotes={anecdotes} />
-        <About />
-        <CreateNew addNew={addNew} />
-        <Footer />
+        <Routes>
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/anecdotes/:id"
+            element={<Anecdote anecdote={anecdote} />}
+          />
+          <Route
+            path="/anecdotes"
+            element={<AnecdoteList anecdotes={anecdotes} />}
+          />
+          <Route path="/create" element={<CreateNew addNew={addNew} />} />
+          <Route
+            path="/"
+            element={<Navigate replace to="/anecdotes" />}
+          ></Route>
+        </Routes>
       </div>
+      <Footer />
     </div>
   )
 }
