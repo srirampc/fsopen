@@ -12,6 +12,7 @@ import {
 } from 'react-router-dom'
 import Anecdote from './components/Anecdote'
 import Notification from './components/Notification'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -68,16 +69,16 @@ const About = () => (
 )
 
 const CreateNew = (props: ICreateProps) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField<string>('', 'text')
+  const author = useField<string>('', 'text')
+  const info = useField<string>('', 'text')
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     })
   }
@@ -88,27 +89,15 @@ const CreateNew = (props: ICreateProps) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
