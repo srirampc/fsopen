@@ -17,3 +17,7 @@ export interface IAnecdoteProps {
 export interface ICreateProps {
     addNew: (anew: IAnecdote) => void
 }
+
+export interface INotificationProps {
+    notification: string
+}

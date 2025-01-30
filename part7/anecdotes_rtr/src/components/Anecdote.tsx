@@ -7,7 +7,7 @@ const Anecdote = ({ anecdote }: IAnecdoteProps) => {
         {anecdote?.content} by {anecdote?.author}
       </h3>
       <div> has {anecdote?.votes} votes</div>
-      <div> for more info see <a href="{anecdote?.info}"> {anecdote?.info} </a></div>
+      <div> for more info see <a href={anecdote?.info}> {anecdote?.info} </a></div>
     </div>
   )
 }

@@ -11,6 +11,7 @@ import {
   useMatch,
 } from 'react-router-dom'
 import Anecdote from './components/Anecdote'
+import Notification from './components/Notification'
 
 const Menu = () => {
   const padding = {
@@ -138,10 +139,16 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState<string>('')
+  const navigate = useNavigate()
 
   const addNew = (anecdote: IAnecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote '${anecdote.content}' created!`)
+    setTimeout(() => {
+      setNotification('')
+    }, 5000)
+    navigate('/')
   }
 
   const anecdoteById = (id: number) => anecdotes.find((a) => a.id === id)
@@ -166,6 +173,7 @@ const App = () => {
     <div>
       <h2>Software Anecdotes</h2>
       <Menu />
+      <Notification notification={notification} />
       <div className="card">
         <Routes>
           <Route path="/about" element={<About />} />
