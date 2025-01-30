@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react'
 import './App.css'
-import { IAListProps, IAnecdote, IAnecdoteProps, ICreateProps } from './ifx'
+import { IAListProps, IAnecdote, ICreateProps } from './ifx'
 import Footer from './components/Footer'
 import {
   useNavigate,
@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 import Anecdote from './components/Anecdote'
 import Notification from './components/Notification'
-import { useField } from './hooks'
+import { IField, useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -75,6 +75,7 @@ const CreateNew = (props: ICreateProps) => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
+    console.log('Event', e.type)
     props.addNew({
       content: content.value,
       author: author.value,
@@ -83,23 +84,37 @@ const CreateNew = (props: ICreateProps) => {
     })
   }
 
+  const handleReset = (e: SyntheticEvent) => {
+    e.preventDefault()
+    console.log('Reset')
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
+  function validInputProps<T>(rtx: IField<T>) {
+    const { reset: _rst, ...vprops } = rtx
+    return vprops
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input {...content} />
+          <input {...validInputProps(content)} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...validInputProps(author)} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...validInputProps(info)} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   )

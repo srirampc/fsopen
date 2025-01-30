@@ -1,3 +1,5 @@
+import { SyntheticEvent } from "react"
+
 export interface IAnecdote {
   content: string
   author: string
@@ -20,4 +22,11 @@ export interface ICreateProps {
 
 export interface INotificationProps {
     notification: string
+}
+
+export interface IField<T> {
+  type: string
+  value: T
+  onChange: (event: SyntheticEvent) => void
+  reset: () => void
 }
