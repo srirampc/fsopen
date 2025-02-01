@@ -9,10 +9,12 @@ import {
   IUseCountry,
   IField,
 } from '../ifx'
+import { AxiosError } from 'axios'
 
 export const useCountry = (name: string): IUseCountry => {
   const [countryName, setCountryName] = useState<string>(name)
   const [country, setCountry] = useState<ICountry | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const [weatherState, setWeatherState] = useState<IWeatherState>({
     temp: 0,
     wind: 0,
@@ -28,18 +30,33 @@ export const useCountry = (name: string): IUseCountry => {
   useEffect(() => {
     console.log('useEffect run ', countryName)
     if (countryName)
-      countriesService.getCountry(countryName).then((ctdata: ICountry) => {
-        setCountry(ctdata)
-        console.log('Loaded Country')
-        const lat = ctdata.capitalInfo.latlng[0]
-        const lon = ctdata.capitalInfo.latlng[1]
-        if (lat != weatherLoc.lat && lon != weatherLoc.lon) {
-          setWeatherLoc({
-            lat: lat,
-            lon: lon,
-          })
-        }
-      })
+      countriesService
+        .getCountry(countryName)
+        .then((ctdata: ICountry) => {
+          setCountry(ctdata)
+          console.log('Loaded Country')
+          const lat = ctdata.capitalInfo.latlng[0]
+          const lon = ctdata.capitalInfo.latlng[1]
+          if (lat != weatherLoc.lat && lon != weatherLoc.lon) {
+            setWeatherLoc({
+              lat: lat,
+              lon: lon,
+            })
+          }
+        })
+        .catch((error: AxiosError) => {
+          console.log(error)
+          const errMessage = error.message
+          const response = error.response
+          if (response) {
+            const responseData = response.data as typeof response.data & {
+              error: string
+            }
+            setErrorMessage(`${countryName} : ${responseData.error}`)
+          } else {
+            setErrorMessage(errMessage)
+          }
+        })
   }, [countryName])
 
   useEffect(() => {
@@ -79,6 +96,7 @@ export const useCountry = (name: string): IUseCountry => {
     country,
     weatherState,
     weatherLoc,
+    errorMessage,
   }
 }
 

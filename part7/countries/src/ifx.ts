@@ -67,6 +67,7 @@ export interface IUseCountry {
   country: ICountry | null
   weatherState: IWeatherState
   weatherLoc: IWeatherLocation
+  errorMessage: string
 }
 
 export interface IHCountryProps {

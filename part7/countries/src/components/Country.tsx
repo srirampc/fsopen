@@ -3,7 +3,11 @@ import { IHCountryProps } from '../ifx'
 const Country = ({ uCountry }: IHCountryProps) => {
   console.log('Country render')
   if (uCountry == null || uCountry.country == null) {
-    return <></>
+    return (
+      <div>
+        <strong>{uCountry?.errorMessage}</strong>
+      </div>
+    )
   }
 
   const country = uCountry.country

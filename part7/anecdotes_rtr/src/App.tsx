@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react'
 import './App.css'
-import { IAListProps, IAnecdote, ICreateProps } from './ifx'
+import { IField, IAListProps, IAnecdote, ICreateProps } from './ifx'
 import Footer from './components/Footer'
 import {
   useNavigate,
@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 import Anecdote from './components/Anecdote'
 import Notification from './components/Notification'
-import { IField, useField } from './hooks'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
