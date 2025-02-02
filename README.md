@@ -63,3 +63,5 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 | Problem Statements | Solutions |
 |-|-|
 |<ul><li>[7.1 -- 7.3](https://fullstackopen.com/en/part7/react_router#exercises-7-1-7-3)</li> <li>[7.4 -- 7.6](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)</li></ul> | [Anecdotes with Router](part7/anecdotes_rtr) |
+|<ul><li>[7.7](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)</li></ul> | [Countries with Custom Hooks](part7/countries) |
+|<ul><li>[7.8](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)</li></ul> | [useResource Custom Hooks](part7/uresource) |
