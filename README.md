@@ -66,3 +66,4 @@ For Exercises 4.8 onwards, I started using Typescript for the solutions since I 
 |<ul><li>[7.7](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)</li></ul> | [Countries with Custom Hooks](part7/countries) |
 |<ul><li>[7.8](https://fullstackopen.com/en/part7/custom_hooks#exercises-7-4-7-8)</li></ul> | [useResource Custom Hooks](part7/uresource) |
 |<ul><li>[7.9 -- 7.13](https://fullstackopen.com/en/part7/exercises_extending_the_bloglist#state-management-redux)</li></ul> | [Blog List with RTK](part7/bloglist_rtk) |
+|<ul><li>[7.9 -- 7.13](https://fullstackopen.com/en/part7/exercises_extending_the_bloglist#state-management-react-query-and-context)</li></ul> | [Blog List with Query/Contexts](part7/bloglist_qry) |
