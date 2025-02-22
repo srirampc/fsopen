@@ -1,9 +1,9 @@
-import { IBlog, IPropsBlogList } from '../ifx'
+import { IBlog } from '../ifx'
 import Blog from './Blog'
 import { useQuery } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 
-const BlogList = (props: IPropsBlogList) => {
+const BlogList = () => {
   const result = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
@@ -32,13 +32,7 @@ const BlogList = (props: IPropsBlogList) => {
     <div data-testid="blog-list-root" id="blog-list-root">
       {blogs
         .sort((a, b) => b.likes - a.likes)
-        .map((blog: IBlog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={props.user}
-          />
-        ))}
+        .map((blog: IBlog) => <Blog key={blog.id} blog={blog} />)}
     </div>
   )
 }

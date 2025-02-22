@@ -1,4 +1,8 @@
-import { SetStateAction, Dispatch, ReactNode } from 'react'
+import { ReactNode } from 'react'
+
+export interface IHandleTogglable {
+  toggleVisibility: () => void
+}
 
 export interface IBlog {
   title: string
@@ -16,40 +20,20 @@ export interface IUser {
   token?: string
 }
 
-export interface IPropsBlog {
-  blog: IBlog
-  user: IUser | null
-}
-
-export interface IPropsBlogList {
-  user: IUser | null
-}
-
-export interface IPropsLogin {
-  user: IUser | null
-  setUser: Dispatch<SetStateAction<IUser | null>>
-}
-
-export interface IPropsNotification {
-  message: string | null
+export interface INotification {
+  message: string
   className: string
 }
 
-export interface IPropsLogout {
-  user: IUser | null
-  setUser: Dispatch<SetStateAction<IUser | null>>
+export interface IPropsBlog {
+  blog: IBlog
 }
 
 export interface IPropsAddBlog {
-  user: IUser | null
-  updateUI: () => void
+  toggleUI: () => void
 }
 
 export interface IPropsTogglable {
   buttonLabel: string
   children?: ReactNode
-}
-
-export interface IHandleTogglable {
-  toggleVisibility: () => void
 }

@@ -1,13 +1,15 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import { IUser, IPropsLogin } from '../ifx'
+import { IUser } from '../ifx'
 import { useState, FormEvent } from 'react'
 import { useNotificationDispatch } from '../contexts/NotificationContext'
+import { useUserDispatch } from '../contexts/UserContext'
 
-const Login = (props: IPropsLogin) => {
+const Login = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const dispatch = useNotificationDispatch()
+  const notifDispatch = useNotificationDispatch()
+  const userDispatch = useUserDispatch()
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log('login envent')
@@ -21,18 +23,18 @@ const Login = (props: IPropsLogin) => {
           const errMessage = error.response
             ? error.response.data.error
             : error.message
-          dispatch({
+          notifDispatch({
             type: 'SET',
             payload: { message: errMessage, className: 'error' }
           })
-          setTimeout(() => dispatch({ type: 'RESET' }), 5000)
+          setTimeout(() => notifDispatch({ type: 'RESET' }), 5000)
         })) as IUser
       console.log(user)
       window.localStorage.setItem(loginService.tokenKey, JSON.stringify(user))
       if (user.token) {
         blogService.setToken(user.token)
       }
-      props.setUser(user)
+      userDispatch({ type: 'SET', payload: user })
       setUsername(username)
       setPassword(password)
     } catch (error) {

@@ -51,7 +51,7 @@ const AddBlog = (props: IPropsAddBlog) => {
 
   const addBlog = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.updateUI()
+    props.toggleUI()
     const blogObject = {
       title: newBlog.title,
       author: newBlog.author,

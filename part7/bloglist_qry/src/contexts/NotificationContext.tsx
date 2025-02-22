@@ -1,9 +1,5 @@
 import { createContext, useReducer, useContext, Dispatch } from 'react'
-
-interface INotification {
-  message: string
-  className: string
-}
+import { INotification } from '../ifx'
 
 type IAction =
   | { type: 'SET'; payload: INotification }
@@ -18,12 +14,12 @@ const initialState = { message: '', className: '' }
 const notificationReducer = (state = initialState, action: IAction) => {
   console.log('Reducer : ', state, action)
   switch (action.type) {
-    case 'SET':
-      return action.payload ? action.payload : action.payload
-    case 'RESET':
-      return initialState
-    default:
-      return state
+  case 'SET':
+    return action.payload ? action.payload : action.payload
+  case 'RESET':
+    return initialState
+  default:
+    return state
   }
 }
 

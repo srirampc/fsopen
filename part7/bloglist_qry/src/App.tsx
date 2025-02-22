@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Login from './components/Login.tsx'
 import Notification from './components/Notification.tsx'
 import blogService from './services/blogs'
@@ -8,9 +8,10 @@ import Logout from './components/Logout.tsx'
 import AddBlog from './components/AddBlog.tsx'
 import BlogList from './components/BlogList.tsx'
 import Togglable from './components/Togglable.tsx'
+import { useUserDispatch, useUserValue } from './contexts/UserContext.tsx'
 
 const App = () => {
-  const [user, setUser] = useState<IUser | null>(null)
+  const userDispatch = useUserDispatch()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(loginService.tokenKey)
@@ -18,34 +19,35 @@ const App = () => {
     if (loggedUserJSON) {
       console.log('logged in 2', loggedUserJSON, loggedUserJSON !== undefined)
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      userDispatch({ type: 'SET', payload: user as IUser })
       blogService.setToken(user.token)
     }
   }, [])
 
+  const user = useUserValue()
   const addBlogRef = useRef<IHandleTogglable>(null)
-  const updateUI = () => {
+  const toggleUI = () => {
     addBlogRef.current?.toggleVisibility()
   }
   const userContent = () => {
     return (
       <>
-        <Logout user={user} setUser={setUser} />
+        <Logout />
         <Togglable buttonLabel="add blog" ref={addBlogRef}>
-          <AddBlog user={user} updateUI={updateUI} />
+          <AddBlog toggleUI={toggleUI} />
         </Togglable>
-        <BlogList user={user} />
+        <BlogList />
       </>
     )
   }
 
-  const loginForm = () => <Login user={user} setUser={setUser} />
+  const loginForm = () => <Login />
 
   return (
     <div>
       <h1>blogs</h1>
       <Notification />
-      {user ? userContent() : loginForm()}
+      {user.username ? userContent() : loginForm()}
     </div>
   )
 }

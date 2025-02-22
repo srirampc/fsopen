@@ -3,8 +3,10 @@ import { IBlog, IPropsBlog } from '../ifx'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotificationDispatch } from '../contexts/NotificationContext'
 import blogService from '../services/blogs'
+import { useUserValue } from '../contexts/UserContext'
 
 const Blog = (props: IPropsBlog) => {
+  const user = useUserValue()
   const [showDetail, setShowDetail] = useState<boolean>(false)
   const blogStyle = {
     paddingTop: 10,
@@ -85,7 +87,7 @@ const Blog = (props: IPropsBlog) => {
           </div>
           <div className="blog-user">
             Added by: {props.blog.user?.name}
-            {props.blog.user?.username === props.user?.username ? (
+            {props.blog.user?.username === user?.username ? (
               <button onClick={removeBlog}>delete</button>
             ) : (
               <></>

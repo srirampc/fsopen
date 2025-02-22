@@ -1,16 +1,18 @@
-import { IPropsLogout } from '../ifx'
+import { useUserDispatch, useUserValue } from '../contexts/UserContext'
 import loginService from '../services/login'
 
-const Logout = (props: IPropsLogout) => {
+const Logout = () => {
+  const user = useUserValue()
+  const userDispatch = useUserDispatch()
   const handleLogout = () => {
     window.localStorage.removeItem(loginService.tokenKey)
-    props.setUser(null)
+    userDispatch({ type: 'RESET' })
   }
 
   return (
     <div>
       <form onSubmit={handleLogout}>
-        {props.user?.name} logged in. &nbsp;
+        {user?.name} logged in. &nbsp;
         <button type="submit">logout</button>
       </form>
     </div>
