@@ -1,16 +1,16 @@
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../ifx'
+import { ILoginUser } from '../ifx'
 import { AppDispatch } from '../store'
 
-const emptyState: IUser = { username: '', password: '' }
+const emptyState: ILoginUser = { username: '', password: '' }
 
 const userReducer = createSlice({
   name: 'user',
   initialState: emptyState,
   reducers: {
-    updateUser: (_st, action: PayloadAction<IUser>) => {
+    updateUser: (_st, action: PayloadAction<ILoginUser>) => {
       return action.payload
     },
     setUserName: (state, action: PayloadAction<string>) => {
@@ -44,7 +44,7 @@ export const loginUser = (username: string, password: string) => {
       .login({
         username,
         password,
-      })) as IUser
+      })) as ILoginUser
     console.log(user)
     window.localStorage.setItem(loginService.tokenKey, JSON.stringify(user))
     if (user.token) {

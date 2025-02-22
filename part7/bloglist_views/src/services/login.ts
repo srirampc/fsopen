@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { IUser } from '../ifx'
+import { ILoginUser } from '../ifx'
 
 const baseUrl = '/api/login'
 const tokenKey = 'loggedBlogsUser'
 
-const login = async (credentials: IUser) => {
+const login = async (credentials: ILoginUser) => {
   const response = await axios.post(baseUrl, credentials)
   return response.data
 }

@@ -11,7 +11,7 @@ const Home = () => {
   const toggleVisibility = () => {
     addBlogRef.current?.toggleVisibility()
   }
-  const user = useAppSelector((state) => state.user)
+  const loggedInUser = useAppSelector((state) => state.loggedInUser)
 
   const userContent = () => {
     return (
@@ -31,7 +31,7 @@ const Home = () => {
 
   return (
     <div>
-      {user.token ? userContent() : loginForm()}
+      {loggedInUser.token ? userContent() : loginForm()}
     </div >
   )
 }

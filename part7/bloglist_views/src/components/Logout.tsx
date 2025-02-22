@@ -3,15 +3,13 @@ import { logoutUser } from '../reducers/userReducer'
 
 const Logout = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.user)
+  const user = useAppSelector((state) => state.loggedInUser)
 
   return (
-    <div>
-      <form onSubmit={() => dispatch(logoutUser())}>
-        {user.name} logged in. &nbsp;
-        <button type="submit">logout</button>
-      </form>
-    </div>
+    <>
+      {user.name} logged in. &nbsp;
+      <button onClick={() => dispatch(logoutUser())}>logout</button>
+    </>
   )
 }
 

@@ -1,62 +1,71 @@
-import { useState } from 'react'
-import { IPropsBlog } from '../ifx'
-import { useAppSelector } from '../hooks'
+import { Navigate, useParams } from 'react-router-dom'
+import { IBlog } from '../ifx'
+import { setNotification } from '../reducers/notficationReducer'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = (props: IPropsBlog) => {
-  const [showDetail, setShowDetail] = useState<boolean>(false)
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
-  const user = useAppSelector((state) => state.user)
+const Blog = () => {
+  const id = useParams().id
+  const blogs = useAppSelector((state) => state.blogs)
+  const blog = blogs.find((b) => b.id === id)
+  const loggedInUser = useAppSelector((state) => state.loggedInUser)
+  const dispatch = useAppDispatch()
 
-  const toggleShow = () => {
-    setShowDetail(!showDetail)
+  const handleLike = (uBlog: IBlog) => {
+    const title = uBlog.title
+    dispatch(likeBlog(uBlog))
+      .then(() => {
+        const nMsg = `The blog '${title}' was sucessfully updated in the server`
+        dispatch(setNotification({ message: nMsg, className: 'notify' }, 5))
+      })
+      .catch((error) => {
+        const errMessage = error.response
+          ? error.response.data.error
+          : error.message
+        dispatch(setNotification({ message: errMessage, className: 'error' }, 5))
+      })
   }
 
-  const addLikes = () => {
-    props.handleLike(props.blog)
+  const handleRemove = (dxBlog: IBlog) => {
+    const title = dxBlog.title
+    dispatch(deleteBlog(dxBlog))
+      .then(() => {
+        const nMsg = `The blog '${title}' was sucessfully deleted in the server`
+        dispatch(setNotification({ message: nMsg, className: 'notify' }, 5))
+      }).catch((error) => {
+        const errMessage = error.response
+          ? error.response.data.error
+          : error.message
+        dispatch(setNotification({ message: errMessage, className: 'error' }, 5))
+      })
   }
+
+  if (!blog) { return <Navigate replace to="/" /> }
 
   const removeBlog = () => {
-    if (window.confirm(`Confirm removing blog : '${props.blog.title}' ?`)) {
-      props.handleRemove(props.blog)
+    if (window.confirm(`Confirm removing blog : '${blog.title}' ?`)) {
+      handleRemove(blog)
     }
   }
 
-  const blogDetail = () => {
-    return (
-      <>
-        <div className="blog-detail">
-          <div className="blog-url">{props.blog.url}</div>
-          <div className="blog-likes">
-            likes : {props.blog.likes}
-            <button onClick={addLikes}>like</button>
-          </div>
-          <div className="blog-user">
-            Added by: {props.blog.user?.name}
-            {props.blog.user?.username === user?.username ? (
-              <button onClick={removeBlog}>delete</button>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-      </>
-    )
-  }
-
   return (
-    <div style={blogStyle} className="blog">
-      <div className="blog-title-author">
-        {props.blog.title} {props.blog.author}
+    <div className="blog">
+      <div className="blog-title-author"> {blog.title} {blog.author} </div>
+      <div className="blog-detail">
+        <div className="blog-url">{blog.url}</div>
+        <div className="blog-likes">
+          likes : {blog.likes}
+          <button onClick={() => handleLike(blog)}>like</button>
+        </div>
+        <div className="blog-user">
+          Added by: {blog.user?.name}
+          {blog.user?.username === loggedInUser?.username ? (
+            <button onClick={removeBlog}>delete</button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
-      {!showDetail && <button onClick={toggleShow}>show</button>}
-      {showDetail && <button onClick={toggleShow}>hide</button>}
-      {showDetail && blogDetail()}
     </div>
   )
 }

@@ -1,50 +1,21 @@
 import { IBlog } from '../ifx'
-import Blog from './Blog'
-import { setNotification } from '../reducers/notficationReducer'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { useAppSelector } from '../hooks'
+import { Link } from 'react-router-dom'
 
 const BlogList = () => {
-  const dispatch = useAppDispatch()
   const blogs = useAppSelector((state) => state.blogs)
 
-  const handleLike = (uBlog: IBlog) => {
-    const title = uBlog.title
-    dispatch(likeBlog(uBlog)).then(() => {
-      const nMsg = `The blog ${title} was sucessfully updated in the server`
-      dispatch(setNotification({ message: nMsg, className: 'notify' }, 5))
-    })
-      .catch((error) => {
-        const errMessage = error.response
-          ? error.response.data.error
-          : error.message
-        dispatch(setNotification({ message: errMessage, className: 'error' }, 5))
-      })
-  }
-
-  const handleRemove = (dxBlog: IBlog) => {
-    const title = dxBlog.title
-    dispatch(deleteBlog(dxBlog)).then(() => {
-      const nMsg = `The blog ${title} was sucessfully deleted in the server`
-      dispatch(setNotification({ message: nMsg, className: 'notify' }, 5))
-    }).catch((error) => {
-      const errMessage = error.response
-        ? error.response.data.error
-        : error.message
-      dispatch(setNotification({ message: errMessage, className: 'error' }, 5))
-    })
-  }
-
+  // <Blog key={blog.id} />
   return (
     <div data-testid="blog-list-root" id="blog-list-root">
       {[...blogs]
-        .sort((a, b) => b.likes - a.likes).map((blog: IBlog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            handleLike={handleLike}
-            handleRemove={handleRemove}
-          />
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog: IBlog) => (
+          <div key={blog.id} className="blog-link">
+            <Link to={`/blogs/${blog.id}`} key={blog.id}>
+              {blog.title}
+            </Link>
+          </div>
         ))}
     </div>
   )

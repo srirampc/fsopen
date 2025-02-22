@@ -7,39 +7,43 @@ import { useAppDispatch, useAppSelector } from './hooks.ts'
 import Home from './components/Home.tsx'
 import Logout from './components/Logout.tsx'
 import BlogUsers from './components/BlogUsers.tsx'
+import BlogUser from './components/BlogUser.tsx'
+import Blog from './components/Blog.tsx'
+import BlogList from './components/BlogList.tsx'
 
 const App = () => {
-
   const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [])
+  useEffect(() => { dispatch(initializeBlogs()) }, [])
+  useEffect(() => { dispatch(initializeUser()) }, [])
 
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
-
-  const padding = {
-    padding: 5
+  const user = useAppSelector((state) => state.loggedInUser)
+  const padding = { padding: 5 }
+  const navBar = () => {
+    return (
+      <div className='nav-bar'>
+        <Link style={padding} to="/">home</Link>
+        <Link style={padding} to="/blogs">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+        <Logout />
+      </div>
+    )
   }
-  const user = useAppSelector((state) => state.user)
 
   return (
-    <div>
+    <>
       <Router>
-        <div>
-          <Link style={padding} to="/">home</Link>
-          <Link style={padding} to="/users">users</Link>
-        </div>
-        <h1>blogs</h1>
+        {user.token ? navBar() : <Navigate replace to="/" />}
+        <h1>blogs app</h1>
         <Notification />
-        {user.token ? <Logout /> : <Navigate replace to="/" />}
         <Routes>
+          <Route path="/blogs" element={<BlogList />} />
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route path="/users/:id" element={<BlogUser />} />
           <Route path="/users" element={<BlogUsers />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
-    </div>
+    </>
   )
 }
 

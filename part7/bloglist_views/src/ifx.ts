@@ -6,10 +6,10 @@ export interface IBlog {
   url: string
   likes: number
   id?: string
-  user?: IUser
+  user?: ILoginUser
 }
 
-export interface IUser {
+export interface ILoginUser {
   username: string
   password: string
   name?: string
@@ -30,12 +30,6 @@ export interface IHandleTogglable {
 export interface INotification {
   message: string | null
   className: string
-}
-
-export interface IPropsBlog {
-  blog: IBlog
-  handleLike: (updatedBlog: IBlog) => void
-  handleRemove: (blogToDelete: IBlog) => void
 }
 
 export interface IPropsAddBlog {
