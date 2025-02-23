@@ -7,6 +7,7 @@ export interface IBlog {
   likes: number
   id?: string
   user?: ILoginUser
+  comments?: IComment[]
 }
 
 export interface ILoginUser {
@@ -14,6 +15,12 @@ export interface ILoginUser {
   password: string
   name?: string
   token?: string
+}
+
+export interface IComment {
+  text: string
+  blog?: IBlog
+  id?: string
 }
 
 export interface IBlogUser {

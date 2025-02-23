@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { IBlog } from '../ifx'
 const baseUrl = '/api/blogs'
+const commentBaseUrl = '/api/comments'
 
 let currToken: string | null = null
 
@@ -43,4 +44,14 @@ const deleteBlog = (delObject: IBlog) => {
   return request.then((response) => response.data)
 }
 
-export default { getAll, create, update, deleteBlog, setToken }
+const addComment = (cBlog: IBlog, cmtText: string) => {
+  const config = {
+    headers: { Authorization: currToken },
+  }
+  const request = axios.post(
+    commentBaseUrl, { text: cmtText, blog: cBlog.id }, config
+  )
+  return request.then((response) => response.data)
+}
+
+export default { getAll, create, update, deleteBlog, setToken, addComment }

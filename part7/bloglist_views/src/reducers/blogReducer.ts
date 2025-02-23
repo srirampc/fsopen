@@ -1,4 +1,4 @@
-import { IBlog } from '../ifx'
+import { IBlog, IComment } from '../ifx'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../store'
 import blogService from '../services/blogs'
@@ -11,8 +11,9 @@ const blogSlice = createSlice({
   reducers: {
     updateBlogs(state: IBlog[], action: PayloadAction<IBlog>) {
       const fid = action.payload.id
-      const foundNote = state.find((anx) => anx.id === fid)
-      if (foundNote) {
+      const foundBlog = state.find((anx) => anx.id === fid)
+      console.log('Update : ', action.payload)
+      if (foundBlog) {
         return state.map((anx) =>
           anx.id !== fid ? anx : { ...action.payload },
         )
@@ -35,11 +36,24 @@ const blogSlice = createSlice({
     appendBlog(state: IBlog[], action: PayloadAction<IBlog>) {
       state.push(action.payload)
     },
+    appendComment(state: IBlog[], action: PayloadAction<IComment>) {
+      const comment = action.payload
+      console.log('Action Payload', comment)
+      const fid = comment.blog?.id
+      const foundBlog = state.find((anx) => anx.id === fid)
+      if (foundBlog) {
+        return state.map((anx: IBlog) =>
+          anx.id !== fid ? anx : { ...anx, comments: anx.comments?.concat(action.payload) },
+        )
+      } else {
+        return state
+      }
+    },
   }
 })
 
 
-export const { updateBlogs, removeBlog, setBlogs, appendBlog } =
+export const { updateBlogs, removeBlog, setBlogs, appendBlog, appendComment } =
   blogSlice.actions
 
 
@@ -74,6 +88,14 @@ export const deleteBlog = (delBlog: IBlog) => {
     await blogService.deleteBlog(delBlog).then(() => {
       dispatch(removeBlog(delBlog as IBlog))
     })
+  }
+}
+
+export const addBlogComment = (cBlog: IBlog, text: string) => {
+  return async (dispatch: AppDispatch) => {
+    const addedComment = await blogService.addComment(cBlog, text)
+    console.log(addedComment)
+    dispatch(appendComment(addedComment))
   }
 }
 

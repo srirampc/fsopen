@@ -11,6 +11,7 @@ import middleware from './utils/middleware'
 import usersRouter from './controllers/users'
 import loginRouter from './controllers/login'
 import testingRouter from './controllers/testing'
+import commentsRouter from './controllers/comments'
 
 const mongoUrl = config.MONGODB_BLOGS_URI ? config.MONGODB_BLOGS_URI : 'NODB'
 mongoose
@@ -32,10 +33,11 @@ app.use(express.json())
 app.use(morgan('combined'))
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', middleware.userExtractor, blogsRouter)
+app.use('/api/comments', middleware.userExtractor, commentsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-if(process.env.NODE_ENV == 'test') {
-    app.use('/api/testing', testingRouter)
+if (process.env.NODE_ENV == 'test') {
+  app.use('/api/testing', testingRouter)
 }
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

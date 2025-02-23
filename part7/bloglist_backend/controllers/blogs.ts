@@ -8,7 +8,9 @@ import { BlogRequest } from '../utils/middleware'
 const blogsRouter = Router()
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { text: 1 })
   response.json(blogs)
 })
 
@@ -27,6 +29,7 @@ blogsRouter.post('/', async (request: express.Request, response) => {
         url: body.url,
         likes: body.likes ? body.likes : 0,
         user: user.id,
+        comments: [],
       })
       const savedBlog = await blog.save()
       console.log("Saved Blog", savedBlog)
@@ -48,6 +51,7 @@ blogsRouter.get('/:id', async (request, response) => {
     username: 1,
     name: 1,
   })
+    .populate('comments', { text: 1 })
   if (note) {
     response.json(note)
   } else {
@@ -72,6 +76,7 @@ blogsRouter.put(
         { title, author, url, likes },
         { new: true, runValidators: true, context: 'query' },
       ).populate('user', { username: 1, name: 1 })
+        .populate('comments', { text: 1 })
       if (updatedNote) {
         response.json(updatedNote)
       } else {

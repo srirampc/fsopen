@@ -6,6 +6,7 @@ export interface IBlog {
   likes: number
   id?: string
   user?: Types.ObjectId
+  comments: mongoose.Types.ObjectId[]
 }
 
 const blogSchema = new mongoose.Schema<IBlog>({
@@ -18,6 +19,12 @@ const blogSchema = new mongoose.Schema<IBlog>({
     ref: 'User',
     required: true,
   },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 })
 
 blogSchema.set('toJSON', {

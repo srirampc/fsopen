@@ -13,25 +13,18 @@ const Home = () => {
   }
   const loggedInUser = useAppSelector((state) => state.loggedInUser)
 
-  const userContent = () => {
+  const addBlogForm = () => {
     return (
-      <>
-        <Togglable buttonLabel="add blog" ref={addBlogRef}>
-          <AddBlog toggleVisibility={toggleVisibility} />
-        </Togglable>
-        <BlogList />
-      </>
-    )
-  }
-  const loginForm = () => {
-    return (
-      <Login />
+      <Togglable buttonLabel="add blog" ref={addBlogRef}>
+        <AddBlog toggleVisibility={toggleVisibility} />
+      </Togglable>
     )
   }
 
   return (
     <div>
-      {loggedInUser.token ? userContent() : loginForm()}
+      {loggedInUser.token ? addBlogForm() : <Login />}
+      <BlogList />
     </div >
   )
 }

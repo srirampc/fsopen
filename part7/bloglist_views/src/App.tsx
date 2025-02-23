@@ -24,7 +24,7 @@ const App = () => {
         <Link style={padding} to="/">home</Link>
         <Link style={padding} to="/blogs">blogs</Link>
         <Link style={padding} to="/users">users</Link>
-        <Logout />
+        {user.token && <Logout />}
       </div>
     )
   }
@@ -32,7 +32,7 @@ const App = () => {
   return (
     <>
       <Router>
-        {user.token ? navBar() : <Navigate replace to="/" />}
+        {navBar()}
         <h1>blogs app</h1>
         <Notification />
         <Routes>
